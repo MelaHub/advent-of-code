@@ -4,47 +4,39 @@ import day01.Coordinates
 
 trait Move {
 
-  def move(startPosition: Coordinates): Coordinates
+  def newPosition(startPosition: Coordinates): Coordinates
+
+  def move(startPosition: Coordinates, keyPad: Map[Coordinates, String]): Coordinates = {
+    val pos = newPosition(startPosition)
+    keyPad.get(pos) match {
+      case None => startPosition
+      case Some(value) => pos
+    }
+  }
 
 }
 
 case object MoveRight extends Move {
 
-  def move(startPosition: Coordinates): Coordinates =
-    if (startPosition.x < 1)
-      startPosition.copy(x=startPosition.x+1)
-    else
-      startPosition
+  def newPosition(startPosition: Coordinates): Coordinates = startPosition.copy(x=startPosition.x+1)
 
 }
 
 case object MoveUp extends Move {
 
-  def move(startPosition: Coordinates): Coordinates =
-    if (startPosition.y < 1)
-      startPosition.copy(y=startPosition.y+1)
-    else
-      startPosition
+  def newPosition(startPosition: Coordinates): Coordinates = startPosition.copy(y=startPosition.y+1)
 
 }
 
 case object MoveLeft extends Move {
 
-  def move(startPosition: Coordinates): Coordinates =
-    if (startPosition.x > -1)
-      startPosition.copy(x=startPosition.x-1)
-    else
-      startPosition
+  def newPosition(startPosition: Coordinates): Coordinates = startPosition.copy(x=startPosition.x-1)
 
 }
 
 case object MoveDown extends Move {
 
-  def move(startPosition: Coordinates): Coordinates =
-    if (startPosition.y > -1)
-      startPosition.copy(y=startPosition.y-1)
-    else
-      startPosition
+  def newPosition(startPosition: Coordinates): Coordinates = startPosition.copy(y=startPosition.y-1)
 
 }
 
