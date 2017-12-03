@@ -25,7 +25,9 @@ object Day02 {
   def bathroomCodeRec(keypad: Map[Coordinates, String], instructionsList: List[List[Move]]): String =
     bathroomCodeRecFn(keypad, Coordinates(0, 0), instructionsList.head, instructionsList.tail, "")
 
-  def bathroomCode(): String = bathroomCodeRec(GRID_KEYPAD, getInputInstructions)
+  def bathroomCodeGrid(): String = bathroomCodeRec(GRID_KEYPAD, getInputInstructions)
+
+  def bathroomCodeStar(): String = bathroomCodeRec(STAR_KEYPAD, getInputInstructions)
 
   private def getInputInstructions(): List[List[Move]] = {
     val resource: InputStream = this.getClass.getClassLoader.getResourceAsStream("day02_input")

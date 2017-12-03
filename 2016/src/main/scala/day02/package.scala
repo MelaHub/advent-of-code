@@ -14,4 +14,20 @@ package object day02 {
     Coordinates(1, -1) -> "9"
   )
 
+  val STAR_KEYPAD = Map[Coordinates, String](
+    Coordinates(0, 0) -> "5",
+    Coordinates(1, 1) -> "2",
+    Coordinates(1, 0) -> "6",
+    Coordinates(1, -1) -> "A",
+    Coordinates(2, 2) -> "1",
+    Coordinates(2, 1) -> "3",
+    Coordinates(2, 0) -> "7",
+    Coordinates(2, -1) -> "B",
+    Coordinates(2, -2) -> "D",
+    Coordinates(3, 1) -> "4",
+    Coordinates(3, 0) -> "8",
+    Coordinates(3, -1) -> "C",
+    Coordinates(4, 0) -> "9"
+  )
+
 }
