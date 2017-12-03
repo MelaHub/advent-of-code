@@ -11,11 +11,11 @@ class GetFinalPositionSpec
     Day01.getFinalPositionFromStart(List(MoveRight) ++ Step(2) ++ List(MoveLeft) ++ Step(3)) shouldEqual Position(2, 3, North)
   }
 
-  // "Moving in a 3/4 circle" should "work" in {
-  //   Day01.getFinalPositionFromStart(List(MoveRight(2), MoveRight(2), MoveRight(2)).flatten) shouldEqual Position(0, -2, West)
-  // }
+  "Moving in a 3/4 circle" should "work" in {
+    Day01.getFinalPositionFromStart(List(MoveRight) ++ Step(2) ++ List(MoveRight) ++ Step(2) ++ List(MoveRight) ++ Step(2)) shouldEqual Position(0, -2, West)
+  }
 
-  // "Multisteps" should "work" in {
-  //   Day01.getFinalPositionFromStart(List(MoveRight(5), MoveLeft(5), MoveRight(5), MoveRight(3)).flatten) shouldEqual Position(10, 2, South)
-  // }
+  "Multisteps" should "work" in {
+    Day01.getFinalPositionFromStart(List(MoveRight) ++ Step(5) ++ List(MoveLeft) ++ Step(5) ++ List(MoveRight) ++ Step(5) ++ List(MoveRight) ++ Step(3)) shouldEqual Position(10, 2, South)
+  }
 }

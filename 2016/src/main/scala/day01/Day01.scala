@@ -34,7 +34,7 @@ object Day01 {
   def easterBunnyHQDistanceLoop(): Int = getDistanceFromStart(stopAtFirstLoop(getInputDirections()))
 
   private def getInputDirections(): List[Move] = {
-    val resource: InputStream = this.getClass.getClassLoader.getResourceAsStream("directions")
+    val resource: InputStream = this.getClass.getClassLoader.getResourceAsStream("day01_input")
     val source = Source.fromInputStream(resource)
     source
       .getLines()
