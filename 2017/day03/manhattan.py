@@ -18,9 +18,9 @@ def get_memory_position(memory_location):
       if i == 0:
         coordinates = (half_arm, position_on_arm)
       elif i == 1:
-        coordinates = (position_on_arm, half_arm)
+        coordinates = (-position_on_arm, half_arm)
       elif i == 2:
-        coordinates = (-half_arm, position_on_arm)
+        coordinates = (-half_arm, -position_on_arm)
       elif i == 3:
         coordinates = (position_on_arm, -half_arm)
       break
@@ -31,3 +31,20 @@ def get_distance(x, y):
 
 def manhattan_memory(memory_location):
   return get_distance(*(get_memory_position(memory_location)))
+
+NEIGHBORHOOD = [(x, y) for x in range(-1, 2) for y in range(-1, 2) if (x, y) != (0, 0)]
+
+def _sum_adiacent_fn(more_than, coordinates):
+  curr_index = len(coordinates.keys())
+  (x_new, y_new) = get_memory_position(curr_index + 1)
+  memory_value = sum([coordinates.get((x_new + x, y_new + y), 0)
+    for (x, y) in NEIGHBORHOOD])
+  if memory_value > more_than:
+    return memory_value
+  else:
+    coordinates.update({(x_new, y_new): memory_value})
+    return _sum_adiacent_fn(more_than, coordinates)
+  
+def sum_adiacent(more_than):
+  return _sum_adiacent_fn(more_than, {(0, 0): 1})
+
