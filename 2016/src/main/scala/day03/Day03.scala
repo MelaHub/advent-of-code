@@ -2,10 +2,20 @@ package day03
 
 import java.io.InputStream
 
+import scala.annotation.tailrec
 import scala.io.Source
 
 
 object Day03 {
+
+  @tailrec
+  private def checkTriangleGroupsRec(leftTriangles: List[Shape], validTriangles: Int) =
+    leftTriangles match {
+      case a :: b :: c :: _ => (a.lengths, b.lengths, c.lengths).zipped.toList.map(l => Shape(l.productIterator.toSeq))
+      case _ => validTriangles
+    }
+
+  def checkTriangleGroups(): Int = getInputTriangles()
 
   def checkTriangles(): Int = getInputTriangles.count(_.is_a_valid_triangle)
 
