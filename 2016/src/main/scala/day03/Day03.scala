@@ -11,11 +11,16 @@ object Day03 {
   @tailrec
   private def checkTriangleGroupsRec(leftTriangles: List[Shape], validTriangles: Int) =
     leftTriangles match {
-      case a :: b :: c :: _ => (a.lengths, b.lengths, c.lengths).zipped.toList.map(l => Shape(l.productIterator.toSeq))
+      case a :: b :: c :: _ =>
+        val bla: Seq[Int] = (a.lengths, b.lengths, c.lengths).zipped.toList.head.productIterator.toSeq
+        val isAValidTriangle = if ((a.lengths, b.lengths, c.lengths).zipped.toList.map(l => Shape(l.productIterator.toSeq)).forall(_.is_a_valid_triangle))
+          1
+        else 0
+        checkTriangleGroupsRec(leftTriangles.tail, validTriangles + isAValidTriangle)
       case _ => validTriangles
     }
 
-  def checkTriangleGroups(): Int = getInputTriangles()
+  def checkTriangleGroups(): Int = checkTriangleGroupsRec(getInputTriangles(), 0)
 
   def checkTriangles(): Int = getInputTriangles.count(_.is_a_valid_triangle)
 
