@@ -9,7 +9,7 @@ import re
 NODE_REGEX = r'(?P<name>[a-z]+) \((?P<weight>[0-9]+)\)( -> (?P<balancing>.*))?'
 
 
-class BalanceTree():
+class BalancePrograms():
 
   roots = None
 
