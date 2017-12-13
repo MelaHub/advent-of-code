@@ -32,5 +32,25 @@ class BalancingTest(unittest.TestCase):
     self.assertEquals(sorted(balance_programs.roots), ['abcd'])
 
   def test_find_root(self):
-    self.assertEquals(find_root_from_file(), set(['vmpywg']))
-   
+    self.assertEquals(read_balance_from_file().roots, set(['vmpywg']))
+
+  def test_find_unbalanced_node(self):
+    balance_programs = BalancePrograms()
+    balance_programs.insert('pbga (66)')
+    balance_programs.insert('xhth (57)')
+    balance_programs.insert('ebii (61)')
+    balance_programs.insert('havc (66)')
+    balance_programs.insert('ktlj (57)')
+    balance_programs.insert('fwft (72) -> ktlj, cntj, xhth')
+    balance_programs.insert('qoyq (66)')
+    balance_programs.insert('padx (45) -> pbga, havc, qoyq')
+    balance_programs.insert('tknk (41) -> ugml, padx, fwft')
+    balance_programs.insert('jptl (61)')
+    balance_programs.insert('ugml (68) -> gyxo, ebii, jptl')
+    balance_programs.insert('gyxo (61)')
+    balance_programs.insert('cntj (57)')
+    self.assertEquals([node.name for (is_balanced, node) in balance_programs.find_unbalanced_node()], ['tknk'])
+    self.assertEquals(balance_programs.find_weight_to_balance_tree(), 60)  
+
+  def test_find_weight_to_balance_from_file(self):
+    self.assertEquals(find_weight_to_balance_from_file(), 1674)
