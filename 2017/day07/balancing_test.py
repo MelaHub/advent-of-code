@@ -12,20 +12,25 @@ class BalancingTest(unittest.TestCase):
   )
   @unpack
   def test_parse_input(self, input_program, expected_name, expected_weight, expected_balancing):
-    balancePrograms = BalancePrograms()
-    name, weight, balancing = balancePrograms._parse_program(input_program)
+    balance_programs = BalancePrograms()
+    name, weight, balancing = balance_programs._parse_program(input_program)
     self.assertEquals(name, expected_name)
     self.assertEquals(weight, expected_weight)
     self.assertEquals(balancing, expected_balancing)
 
   def test_insert_nodes(self):
-    balancePrograms = BalancePrograms()
-    balancePrograms.insert('pbga (66)')
-    self.assertEquals(sorted(balancePrograms.roots), ['pbga'])
-    balancePrograms.insert('fwft (72) -> ktlj, cntj, xhth')
-    self.assertEquals(sorted(balancePrograms.roots), ['fwft', 'pbga'])
-    balancePrograms.insert('padx (45) -> pbga, havc, qoyq')
-    self.assertEquals(sorted(balancePrograms.roots), ['fwft', 'padx'])
-    balancePrograms.insert('abcd (45) -> padx, fwft')
-    self.assertEquals(sorted(balancePrograms.roots), ['abcd'])
+    balance_programs = BalancePrograms()
+    balance_programs.insert('pbga (66)')
+    self.assertEquals(sorted(balance_programs.roots), ['pbga'])
+    balance_programs.insert('fwft (72) -> ktlj, cntj, xhth')
+    self.assertEquals(sorted(balance_programs.roots), ['fwft', 'pbga'])
+    balance_programs.insert('padx (45) -> pbga, havc, qoyq')
+    self.assertEquals(sorted(balance_programs.roots), ['fwft', 'padx'])
+    balance_programs.insert('abcd (45) -> padx, fwft, xywz')
+    self.assertEquals(sorted(balance_programs.roots), ['abcd'])
+    balance_programs.insert('xywz (45)')
+    self.assertEquals(sorted(balance_programs.roots), ['abcd'])
+
+  def test_find_root(self):
+    self.assertEquals(find_root_from_file(), set(['vmpywg']))
    

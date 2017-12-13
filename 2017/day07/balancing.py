@@ -20,10 +20,12 @@ class BalancePrograms():
 
   roots = None
   nodes = None
+  all_nodes_names = None
 
   def __init__(self):
     self.roots = set()
     self.nodes = {}
+    self.all_nodes_names = set()
 
   def _parse_program(self, input_string):
     match = re.search(NODE_REGEX, input_string)
@@ -43,7 +45,17 @@ class BalancePrograms():
     new_node = Node(name, weight, balancing)
     self.nodes[new_node.name] = new_node
     for node in new_node.balancing:
+      self.all_nodes_names.add(node)
       if node in self.roots:
         self.roots.remove(node)
-    self.roots.add(new_node.name) 
+    if new_node.name not in self.all_nodes_names:
+      self.roots.add(new_node.name) 
+
+
+def find_root_from_file():
+  balance_programs = BalancePrograms()
+  with open('balancing') as f:
+    for row in f.readlines():
+      balance_programs.insert(row.strip())
+  return balance_programs.roots
     
