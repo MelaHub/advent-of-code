@@ -1,20 +1,29 @@
-# classe node
-# classe tree
-  # parser di un input
-  # insert -> cerca il nodo e sistema il tree
-  # tree rappresentato come una hashmap
 import re
 
 
 NODE_REGEX = r'(?P<name>[a-z]+) \((?P<weight>[0-9]+)\)( -> (?P<balancing>.*))?'
 
 
+class Node():
+
+  name = None
+  weight = None
+  balancing = None
+
+  def __init__(self, name, weight, balancing):
+    self.name = name
+    self.weight = weight
+    self.balancing = balancing
+
+
 class BalancePrograms():
 
   roots = None
+  nodes = None
 
   def __init__(self):
-    self.roots = {}
+    self.roots = set()
+    self.nodes = {}
 
   def _parse_program(self, input_string):
     match = re.search(NODE_REGEX, input_string)
@@ -28,4 +37,13 @@ class BalancePrograms():
     else:
       balancing = balancing.replace(' ', '').split(',')
     return name, weight, balancing
+
+  def insert(self, input_string):
+    name, weight, balancing = self._parse_program(input_string)
+    new_node = Node(name, weight, balancing)
+    self.nodes[new_node.name] = new_node
+    for node in new_node.balancing:
+      if node in self.roots:
+        self.roots.remove(node)
+    self.roots.add(new_node.name) 
     

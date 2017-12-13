@@ -21,11 +21,11 @@ class BalancingTest(unittest.TestCase):
   def test_insert_nodes(self):
     balancePrograms = BalancePrograms()
     balancePrograms.insert('pbga (66)')
-    self.assertEquals(sorted(balancePrograms.roots.keys()), ['pbga'])
+    self.assertEquals(sorted(balancePrograms.roots), ['pbga'])
     balancePrograms.insert('fwft (72) -> ktlj, cntj, xhth')
-    self.assertEquals(sorted(balancePrograms.roots.keys()), ['fwft', 'pbga'])
+    self.assertEquals(sorted(balancePrograms.roots), ['fwft', 'pbga'])
     balancePrograms.insert('padx (45) -> pbga, havc, qoyq')
-    self.assertEquals(sorted(balancePrograms.roots.keys()), ['fwft', 'padx'])
+    self.assertEquals(sorted(balancePrograms.roots), ['fwft', 'padx'])
     balancePrograms.insert('abcd (45) -> padx, fwft')
-    self.assertEquals(sorted(balancePrograms.roots.keys()), ['abcd'])
+    self.assertEquals(sorted(balancePrograms.roots), ['abcd'])
    
