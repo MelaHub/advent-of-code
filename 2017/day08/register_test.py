@@ -54,11 +54,12 @@ class RegisterTest(unittest.TestCase):
       'c dec -10 if a >= 1',
       'c inc -20 if c == 10']
     register = {}
-    apply_to_register(register, instructions)
+    max_value_ever = apply_to_register(register, instructions)
     self.assertEqual(1, register['a'])
     self.assertEqual(0, register['b'])
     self.assertEqual(-10, register['c'])
     self.assertEqual(1, max_value_in_register(register))
+    self.assertEqual(10, max_value_ever)
 
   def test_max_value_from_file(self):
     self.assertEqual(5221, max_value_in_instructions_from_file())

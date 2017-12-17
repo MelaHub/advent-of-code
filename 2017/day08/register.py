@@ -39,9 +39,13 @@ class Instruction():
 
 
 def apply_to_register(register, list_of_instructions):
+  max_value_ever = max_value_in_register(register)
   for instruction in list_of_instructions:
     i = Instruction(instruction)
     i.apply(register)
+    if register[i.register] > max_value_ever:
+      max_value_ever = register[i.register]
+  return max_value_ever
 
 def max_value_in_register(register):
   return max(register.values())
