@@ -62,4 +62,6 @@ class RegisterTest(unittest.TestCase):
     self.assertEqual(10, max_value_ever)
 
   def test_max_value_from_file(self):
-    self.assertEqual(5221, max_value_in_instructions_from_file())
+    max_value, max_value_ever = max_value_in_instructions_from_file()
+    self.assertEqual(5221, max_value)
+    self.assertEqual(7491, max_value_ever)

@@ -43,18 +43,21 @@ def apply_to_register(register, list_of_instructions):
   for instruction in list_of_instructions:
     i = Instruction(instruction)
     i.apply(register)
-    if register[i.register] > max_value_ever:
+    if register.get(i.register, 0) > max_value_ever:
       max_value_ever = register[i.register]
   return max_value_ever
 
 def max_value_in_register(register):
-  return max(register.values())
+  if len(register):
+    return max(register.values())
+  return 0
 
 def max_value_in_instructions_from_file():
   instructions = []
   with open('register') as f:
     instructions = [row.strip() for row in f.readlines()]
   register = {}
-  apply_to_register(register, instructions)
-  return max_value_in_register(register)
+  max_value_ever = apply_to_register(register, instructions)
+  return (max_value_in_register(register), max_value_ever)
+  
   
