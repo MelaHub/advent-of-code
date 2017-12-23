@@ -29,6 +29,16 @@ class Pipes():
       visited_nodes.add(curr_node)
       to_visit_nodes += [node for node in self.graph.get(curr_node, []) if not node in visited_nodes]
     return visited_nodes
+
+  def find_groups(self):
+    groups = []
+    to_check_nodes = self.graph.keys()
+    while len(to_check_nodes):
+      node = to_check_nodes[0]
+      group = self.search_connected(node)
+      to_check_nodes = [n for n in to_check_nodes if n not in group]
+      groups.append(group)
+    return groups
    
 
 def search_from_file(source_node):

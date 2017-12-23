@@ -43,6 +43,10 @@ class PlumberTest(unittest.TestCase):
     pipes = self._init_sample_pipes()
     self.assertEquals(set([0, 2, 3, 4, 5, 6]), pipes.search_connected(0))
 
+  def test_find_groups(self):
+    pipes = self._init_sample_pipes()
+    self.assertEquals(2, len(pipes.find_groups()))
+
   def test_search_from_file(self):
     connected_nodes = search_from_file(0)
     self.assertEquals(239, len(connected_nodes))
