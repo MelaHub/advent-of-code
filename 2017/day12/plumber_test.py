@@ -41,4 +41,4 @@ class PlumberTest(unittest.TestCase):
 
   def search_connected(self):
     pipes = self._init_sample_pipes()
-    self.assertEquals(set([2, 3, 4, 5, 6]), pipes.search_connected(0))
+    self.assertEquals(set([0, 2, 3, 4, 5, 6]), pipes.search_connected(0))
