@@ -42,3 +42,6 @@ def knot_list(input_list, lengths):
 
 def knot_hash(input_string):
   return input_string
+
+def convert_to_ascii(input_string):
+  return [ord(i) for i in input_string]
