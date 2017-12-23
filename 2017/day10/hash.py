@@ -60,4 +60,7 @@ def get_dense_hash(input_numbers):
   for block_start in range(0, len(input_numbers), BLOCK_SIZE):
     dense_hash.append(get_block_dense_hash(input_numbers[block_start:block_start + BLOCK_SIZE]))
   return dense_hash
+
+def get_hex_hash(input_numbers):
+  return ''.join([hex(n).replace('0x', '').zfill(2) for n in input_numbers])
     

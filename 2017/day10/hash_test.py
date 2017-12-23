@@ -42,6 +42,9 @@ class HashTest(unittest.TestCase):
   def test_get_dense_hash(self):
     self.assertEquals([64] * 16, get_dense_hash([65,  27,  9,  1,  4,  3,  40,  50,  91,  7,  6,  0,  2,  5,  68,  22] * 16))
 
+  def test_get_hex_hash(self):
+    self.assertEquals('4007ff', get_hex_hash([64, 7, 255]))
+
   # @data(
   #   ('', 'a2582a3a0e66e6e86e3812dcb672a272'),
   #   ('AoC 2017', '33efeb34ea91902bb2f59c9920caa6cd'),
