@@ -51,6 +51,9 @@ class HexTile():
   def copy(self):
     return HexTile(self.x, self.y)
 
+  def __str__(self):
+    return 'HexTile(%d, %d)' % (self.x, self.y)
+
 
 def follow_path(starting_point, string_path):
   path = string_path.split(',')
@@ -63,7 +66,7 @@ def _move_point(check_point, move_to, starting_point, ending_point):
   middle_point = starting_point.copy()
   path = 0
   if not middle_point.is_in_diagonal_with(ending_point) and check_point(middle_point, ending_point):
-    n_moves = abs(abs(middle_point.y) - abs(ending_point.y)) / 2
+    n_moves = abs(abs(ending_point.x) - abs(ending_point.y)) / 2
     for i in range(n_moves):
       middle_point = middle_point.move(S)
     path += n_moves
@@ -71,12 +74,14 @@ def _move_point(check_point, move_to, starting_point, ending_point):
   
 
 def find_shortest_path(starting_point, ending_point):
+  print 'Going from %s to %s' % (starting_point, ending_point)
   middle_point = starting_point.copy()
   path_length = 0
-  middle_point, moves_south = _move_point(lambda x, y: x.is_norther(y), S, middle_point, ending_point)
-  middle_point, moves_north = _move_point(lambda x, y: x.is_souther(y), N, middle_point, ending_point)
-  path_length += moves_south
-  path_length += moves_north
+  if abs(ending_point.y) > abs(ending_point.x):
+    middle_point, moves_south = _move_point(lambda x, y: x.is_norther(y), S, middle_point, ending_point)
+    middle_point, moves_north = _move_point(lambda x, y: x.is_souther(y), N, middle_point, ending_point)
+    path_length += moves_south
+    path_length += moves_north
   while not (middle_point.is_in_diagonal_with(ending_point) or not middle_point == ending_point):
     move = None
     if middle_point.x > ending_point.x:
@@ -94,3 +99,11 @@ def find_shortest_path(starting_point, ending_point):
       path_length += 1
   path_length += abs(abs(middle_point.x) - abs(ending_point.x))
   return path_length
+
+def shortest_path_from_file():
+  path = ''
+  with open('hexed') as f:
+    path += f.read().strip()
+  ending_point = follow_path(HexTile(0, 0), path)
+  return find_shortest_path(HexTile(0, 0), ending_point)
+

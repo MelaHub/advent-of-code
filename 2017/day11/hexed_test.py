@@ -35,8 +35,12 @@ class HexEdTest(unittest.TestCase):
     (HexTile(2, -2), 2),
     (HexTile(-1, -5), 3),
     (HexTile(5, -1), 5),
+    (HexTile(-10, -14), 12)
   )
   @unpack
   def test_shortest_path_len(self, ending_point, expected_path):
     self.assertEqual(expected_path, find_shortest_path(HexTile(0, 0), ending_point))
+
+  def test_shortest_path_from_file(self):
+    self.assertEqual(796, shortest_path_from_file())
 
