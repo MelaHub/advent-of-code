@@ -39,3 +39,6 @@ def reverse_for_each_length(input_list, lengths):
 def knot_list(input_list, lengths):
   reversed_list = reverse_for_each_length(input_list, lengths)
   return reversed_list[0] * reversed_list[1]
+
+def knot_hash(input_string):
+  return input_string

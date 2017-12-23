@@ -25,3 +25,13 @@ class HashTest(unittest.TestCase):
   def test_knot_list(self):
     self.assertEquals(212, knot_list(range(0, 256), [212,254,178,237,2,0,1,54,167,92,117,125,255,61,159,164]))
 
+  @data(
+    ('', 'a2582a3a0e66e6e86e3812dcb672a272'),
+    ('AoC 2017', '33efeb34ea91902bb2f59c9920caa6cd'),
+    ('1,2,3', '3efbe78a8d82f29979031a4aa0b16a9d'),
+    ('1,2,4', '63960835bcdc130f0b66d7ff4f6a5a8e')
+  )
+  @unpack
+  def test_knot_hash(self, input_string, expected_hash):
+    self.assertEquals(expected_hash, knot_hash(input_string))
+
