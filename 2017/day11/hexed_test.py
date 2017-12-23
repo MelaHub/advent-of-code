@@ -44,3 +44,5 @@ class HexEdTest(unittest.TestCase):
   def test_shortest_path_from_file(self):
     self.assertEqual(796, shortest_path_from_file())
 
+  def test_longest_path_from_file(self):
+    self.assertEqual(1585, longest_path_from_file())

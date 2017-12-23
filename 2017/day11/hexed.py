@@ -71,10 +71,8 @@ def _move_point(check_point, move_to, starting_point, ending_point):
       middle_point = middle_point.move(S)
     path += n_moves
   return middle_point, path
-  
 
 def find_shortest_path(starting_point, ending_point):
-  print 'Going from %s to %s' % (starting_point, ending_point)
   middle_point = starting_point.copy()
   path_length = 0
   if abs(ending_point.y) > abs(ending_point.x):
@@ -100,10 +98,28 @@ def find_shortest_path(starting_point, ending_point):
   path_length += abs(abs(middle_point.x) - abs(ending_point.x))
   return path_length
 
-def shortest_path_from_file():
+def _read_path_from_file():
   path = ''
   with open('hexed') as f:
     path += f.read().strip()
+  return path
+
+def shortest_path_from_file():
+  path = _read_path_from_file()
   ending_point = follow_path(HexTile(0, 0), path)
   return find_shortest_path(HexTile(0, 0), ending_point)
 
+# TODO: this could be optimized by keeping track of the longest path online - i.e. tracking when we are moving closer of farther from the starting point for each move, instead of getting the longest path at every single move.
+def longest_path_from_file():
+  path = _read_path_from_file()
+  starting_point = HexTile(0, 0)
+  moving_point = HexTile(0, 0)
+  longest_path = 0
+  for direction in path.split(','):
+    moving_point = moving_point.move(direction)
+    path_len = find_shortest_path(starting_point, moving_point)
+    if path_len > longest_path:
+      longest_path = path_len
+  return longest_path  
+  
+  
