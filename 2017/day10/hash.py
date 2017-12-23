@@ -1,27 +1,17 @@
+STANDARD_LENGTHS = [17, 31, 73, 47, 23]
+NUMBER_OF_ROUNDS = 64
+
 def reverse_elements(input_list, current_position, length):
   list_len = len(input_list)
-  if current_position >= list_len:
-    current_position = current_position % list_len
   copy_input = [e for e in input_list]
   if not length:
     return copy_input
-  end_position = current_position + length
-  if end_position >= list_len:
-    end_position = end_position % list_len
-  i = current_position - 1
-  j = end_position
-  start_copy = False
-  while i != j - 2:
-    i += 1
-    j -= 1
-    if i == len(input_list):
-      i = 0
-    if j == -1:
-      j = len(input_list) - 1
-    if start_copy and (i == 0 and j == len(input_list) - 1 or i == j + 1):
-      break
+  switch_elements_list = [(i % list_len, j % list_len)
+    for (i, j) in zip(
+      range(current_position, current_position + length / 2),
+      range(current_position + length - 1, current_position + length / 2 - 1, -1))]
+  for (i, j) in switch_elements_list:
     copy_input[i], copy_input[j] = copy_input[j], copy_input[i]
-    start_copy = True
   return copy_input
   
 def reverse_for_each_length(input_list, lengths):
@@ -45,8 +35,6 @@ def knot_hash(input_string):
 
 def convert_to_ascii(input_string):
   return [ord(i) for i in input_string]
-
-STANDARD_LENGTHS = [17, 31, 73, 47, 23]
 
 def get_standard_lengths(input_string):
   return convert_to_ascii(input_string) + STANDARD_LENGTHS
