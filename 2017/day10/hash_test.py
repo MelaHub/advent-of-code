@@ -17,7 +17,8 @@ class HashTest(unittest.TestCase):
     self.assertEqual(expected_output, reverse_elements(input_list, current_position, reverse_length))
 
   def test_sample_lengths(self):
-    self.assertEquals([3, 4, 2, 1, 0], reverse_for_each_length([0, 1, 2, 3, 4], [3, 4, 1, 5]))
+    reversed_list, _, _ = reverse_for_each_length([0, 1, 2, 3, 4], [3, 4, 1, 5])
+    self.assertEquals([3, 4, 2, 1, 0], reversed_list)
 
   def test_knot_list_sample(self):
     self.assertEquals(12, knot_list([0, 1, 2, 3, 4], [3, 4, 1, 5]))
@@ -34,6 +35,9 @@ class HashTest(unittest.TestCase):
 
   def test_get_standard_lengths(self):
     self.assertEquals([49, 44, 50, 44, 51, 17, 31, 73, 47, 23], get_standard_lengths('1,2,3'))
+
+  def test_get_dense_hash(self):
+    self.assertEquals(64, get_block_dense_hash([65,  27,  9,  1,  4,  3,  40,  50,  91,  7,  6,  0,  2,  5,  68,  22]))
 
   # @data(
   #   ('', 'a2582a3a0e66e6e86e3812dcb672a272'),
