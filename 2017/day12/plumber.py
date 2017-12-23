@@ -39,11 +39,18 @@ class Pipes():
       to_check_nodes = [n for n in to_check_nodes if n not in group]
       groups.append(group)
     return groups
-   
-
-def search_from_file(source_node):
+  
+def _pipes_from_file(): 
   pipes = Pipes()
   with open('plumber') as f:
     for row in f.readlines():
       pipes.add_link(row.strip())
+  return pipes
+
+def search_from_file(source_node):
+  pipes = _pipes_from_file()
   return pipes.search_connected(source_node)
+
+def search_groups_from_file():
+  pipes = _pipes_from_file()
+  return pipes.find_groups()

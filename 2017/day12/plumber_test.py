@@ -50,3 +50,6 @@ class PlumberTest(unittest.TestCase):
   def test_search_from_file(self):
     connected_nodes = search_from_file(0)
     self.assertEquals(239, len(connected_nodes))
+
+  def test_find_groups_from_file(self):
+    self.assertEquals(215, len(search_groups_from_file()))
