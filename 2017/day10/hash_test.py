@@ -23,5 +23,5 @@ class HashTest(unittest.TestCase):
     self.assertEquals(12, hash([0, 1, 2, 3, 4], [3, 4, 1, 5]))
 
   def test_hash(self):
-    self.assertEquals(12, hash(range(0, 256), [212,254,178,237,2,0,1,54,167,92,117,125,255,61,159,164]))
+    self.assertEquals(212, hash(range(0, 256), [212,254,178,237,2,0,1,54,167,92,117,125,255,61,159,164]))
 

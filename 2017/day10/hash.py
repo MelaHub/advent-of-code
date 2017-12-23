@@ -3,6 +3,8 @@ def reverse_elements(input_list, current_position, length):
   if current_position >= list_len:
     current_position = current_position % list_len
   copy_input = [e for e in input_list]
+  if not length:
+    return copy_input
   end_position = current_position + length
   if end_position >= list_len:
     end_position = end_position % list_len
