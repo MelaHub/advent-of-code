@@ -1,11 +1,11 @@
 def reverse_elements(input_list, current_position, length):
   list_len = len(input_list)
   if current_position >= list_len:
-    current_position -= list_len
+    current_position = current_position % list_len
   copy_input = [e for e in input_list]
   end_position = current_position + length
   if end_position >= list_len:
-    end_position -= list_len
+    end_position = end_position % list_len
   i = current_position - 1
   j = end_position
   start_copy = False
@@ -29,6 +29,11 @@ def reverse_for_each_length(input_list, lengths):
   for length in lengths:
     if length > len(input_list):
       continue
-    another_list = reverse_elements(input_list, curr_position, length)
-    curr_position += (length + skip_size)
+    another_list = reverse_elements(another_list, curr_position, length)
+    curr_position = (curr_position + length + skip_size) % len(another_list)
     skip_size += 1
+  return another_list
+
+def hash(input_list, lengths):
+  reversed_list = reverse_for_each_length(input_list, lengths)
+  return reversed_list[0] * reversed_list[1]
