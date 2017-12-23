@@ -20,3 +20,13 @@ class Pipes():
   def add_link(self, link):
     source, links = self._parse_input(link)
     self.graph[source] = links
+
+  def search_connected(self, source):
+    visited_nodes = set()
+    to_visit_nodes = [source]
+    while len(to_visit_nodes):
+      curr_node = to_visit_nodes.pop()
+      visited_nodes.append(curr_node)
+      to_visit_nodes += [node for node in graph.get(curr_node, []) if not visited_notes.contains(node)]
+    return visited_nodes
+    
