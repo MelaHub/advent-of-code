@@ -26,7 +26,7 @@ class Pipes():
     to_visit_nodes = [source]
     while len(to_visit_nodes):
       curr_node = to_visit_nodes.pop()
-      visited_nodes.append(curr_node)
-      to_visit_nodes += [node for node in graph.get(curr_node, []) if not visited_notes.contains(node)]
+      visited_nodes.add(curr_node)
+      to_visit_nodes += [node for node in self.graph.get(curr_node, []) if not node in visited_nodes]
     return visited_nodes
     

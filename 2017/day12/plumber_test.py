@@ -39,6 +39,6 @@ class PlumberTest(unittest.TestCase):
     self.assertEquals(7, len(pipes.graph.keys()))
     self.assertEquals([2, 3, 6], pipes.graph.get(4))
 
-  def search_connected(self):
+  def test_search_connected(self):
     pipes = self._init_sample_pipes()
     self.assertEquals(set([0, 2, 3, 4, 5, 6]), pipes.search_connected(0))
