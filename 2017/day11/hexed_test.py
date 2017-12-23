@@ -22,15 +22,21 @@ class HexEdTest(unittest.TestCase):
     ('ne,ne,ne', HexTile(3, 3)),
     ('ne,ne,sw,sw', HexTile(0, 0)),
     ('ne,ne,s,s', HexTile(2, -2)),
-    ('se,sw,se,sw,sw', HexTile(-1, -5))
+    ('se,sw,se,sw,sw', HexTile(-1, -5)),
+    ('se,ne,se,ne,se', HexTile(5, -1))
   )
   @unpack
   def test_follow_path(self, path, expected_coordinate):
     self.assertEqual(expected_coordinate, follow_path(HexTile(0, 0), path))
 
-
-# ne,ne,ne is 3 steps away.
-# ne,ne,sw,sw is 0 steps away (back where you started).
-# ne,ne,s,s is 2 steps away (se,se).
-# se,sw,se,sw,sw is 3 steps away (s,s,sw).
+  @data(
+    (HexTile(3, 3), 3),
+    (HexTile(0, 0), 0),
+    (HexTile(2, -2), 2),
+    (HexTile(-1, -5), 3),
+    (HexTile(5, -1), 5),
+  )
+  @unpack
+  def test_shortest_path_len(self, ending_point, expected_path):
+    self.assertEqual(expected_path, find_shortest_path(HexTile(0, 0), ending_point))
 
