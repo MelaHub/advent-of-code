@@ -29,8 +29,8 @@ def knot_list(input_list, lengths):
   reversed_list, _, _ = reverse_for_each_length(input_list, lengths)
   return reversed_list[0] * reversed_list[1]
 
-def knot_hash(input_string):
-  return input_string
+def knot_hash(input_list, ascii_lengths):
+  return input_list
 
 def convert_to_ascii(input_string):
   return [ord(i) for i in input_string]
