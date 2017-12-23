@@ -29,4 +29,11 @@ class Pipes():
       visited_nodes.add(curr_node)
       to_visit_nodes += [node for node in self.graph.get(curr_node, []) if not node in visited_nodes]
     return visited_nodes
-    
+   
+
+def search_from_file(source_node):
+  pipes = Pipes()
+  with open('plumber') as f:
+    for row in f.readlines():
+      pipes.add_link(row.strip())
+  return pipes.search_connected(source_node)
