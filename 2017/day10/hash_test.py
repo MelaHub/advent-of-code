@@ -36,8 +36,11 @@ class HashTest(unittest.TestCase):
   def test_get_standard_lengths(self):
     self.assertEquals([49, 44, 50, 44, 51, 17, 31, 73, 47, 23], get_standard_lengths('1,2,3'))
 
-  def test_get_dense_hash(self):
+  def test_get_block_dense_hash(self):
     self.assertEquals(64, get_block_dense_hash([65,  27,  9,  1,  4,  3,  40,  50,  91,  7,  6,  0,  2,  5,  68,  22]))
+
+  def test_get_dense_hash(self):
+    self.assertEquals([64] * 16, get_dense_hash([65,  27,  9,  1,  4,  3,  40,  50,  91,  7,  6,  0,  2,  5,  68,  22] * 16))
 
   # @data(
   #   ('', 'a2582a3a0e66e6e86e3812dcb672a272'),
