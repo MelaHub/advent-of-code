@@ -32,6 +32,9 @@ class HashTest(unittest.TestCase):
   def test_convert_to_ascii(self, input_lengths, expected_ascii):
     self.assertEquals(expected_ascii, convert_to_ascii(input_lengths))
 
+  def test_get_standard_lengths(self):
+    self.assertEquals([49, 44, 50, 44, 51, 17, 31, 73, 47, 23], get_standard_lengths('1,2,3'))
+
   # @data(
   #   ('', 'a2582a3a0e66e6e86e3812dcb672a272'),
   #   ('AoC 2017', '33efeb34ea91902bb2f59c9920caa6cd'),

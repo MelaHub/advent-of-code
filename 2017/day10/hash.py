@@ -45,3 +45,8 @@ def knot_hash(input_string):
 
 def convert_to_ascii(input_string):
   return [ord(i) for i in input_string]
+
+STANDARD_LENGTHS = [17, 31, 73, 47, 23]
+
+def get_standard_lengths(input_string):
+  return convert_to_ascii(input_string) + STANDARD_LENGTHS
