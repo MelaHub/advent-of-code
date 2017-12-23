@@ -53,5 +53,5 @@ class HashTest(unittest.TestCase):
   )
   @unpack
   def test_knot_hash(self, input_string, expected_hash):
-    self.assertEquals(expected_hash, knot_hash(input_string))
+    self.assertEquals(expected_hash, knot_hash(range(0, 256), input_string))
 

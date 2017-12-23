@@ -30,7 +30,10 @@ def knot_list(input_list, lengths):
   return reversed_list[0] * reversed_list[1]
 
 def knot_hash(input_list, ascii_lengths):
-  return input_list
+  lengths = get_standard_lengths(ascii_lengths)
+  sparse_hash = get_sparse_hash(input_list, lengths) 
+  dense_hash = get_dense_hash(sparse_hash)
+  return get_hex_hash(dense_hash)
 
 def convert_to_ascii(input_string):
   return [ord(i) for i in input_string]
@@ -38,13 +41,12 @@ def convert_to_ascii(input_string):
 def get_standard_lengths(input_string):
   return convert_to_ascii(input_string) + STANDARD_LENGTHS
 
-def get_sparse_hash(input_string, ascii_lengths):
-  lengths = get_standard_lengths(ascii_lengths)
+def get_sparse_hash(input_string, lengths):
   copy_list = [i for i in input_string]
   curr_position = 0
   skip_size = 0
   for i in range(0, NUMBER_OF_ROUNDS):
-    copy_list, curr_position, skip_size = reverse_for_each_length(copy_list, curr_position, skip_size)
+    copy_list, curr_position, skip_size = reverse_for_each_length(copy_list, lengths, curr_position, skip_size)
   return copy_list
 
 def get_block_dense_hash(input_numbers):
