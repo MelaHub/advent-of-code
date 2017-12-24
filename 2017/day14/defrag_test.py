@@ -14,6 +14,7 @@ class DefragTest(unittest.TestCase):
 
   @data(
     ('flqrgnkx', 8108),
+    ('nbysizxe', 0),
   )
   @unpack
   def test_number_of_used_squares(self, input_string, expected_used_squares):
