@@ -14,8 +14,18 @@ class DefragTest(unittest.TestCase):
 
   @data(
     ('flqrgnkx', 8108),
-    ('nbysizxe', 0),
+    # ('nbysizxe', 8216),
   )
   @unpack
   def test_number_of_used_squares(self, input_string, expected_used_squares):
     self.assertEquals(expected_used_squares, get_number_of_used_squares(input_string))
+
+  @data(
+    ('flqrgnkx', 1242),
+    ('nbysizxe', 1139),
+  )
+  @unpack
+  def test_number_of_regions(self, input_string, expected_number_of_regions):
+    self.assertEquals(expected_number_of_regions, get_number_of_regions_rec(input_string))
+
+  
