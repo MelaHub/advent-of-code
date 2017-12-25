@@ -34,11 +34,13 @@ def merge_regions(i, j, square_size, full_grid):
           [(x, y) for (x, y) in [(i + h, j + k) for (h, k) in NEIGHBORHOOD]
             if x >= 0 and x < GRID_SIZE and y >= 0 and y < GRID_SIZE and full_grid[x][y] == '1'])
         )]
+
   reduced_square_size = square_size / 2
   neighborhoods = []
   for x in [i, i + reduced_square_size]:
     for y in [j, j + reduced_square_size]:
       neighborhoods += merge_regions(x, y, reduced_square_size, full_grid)
+
   regions_to_check = [r for r in neighborhoods if len(r) > 0]
   regions = []
   while len(regions_to_check):
