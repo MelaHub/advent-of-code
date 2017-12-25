@@ -15,3 +15,6 @@ class DefragTest(unittest.TestCase):
   def test_move(self, input_string, dance_move, expected_string):
     self.assertEquals(expected_string, move(input_string, dance_move))
 
+  def test_dance(self):
+    choreography = ['s1', 'x3/4', 'pe/b']
+    self.assertEquals('baedc', dance('abcde', choreography))

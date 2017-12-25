@@ -11,3 +11,10 @@ def move(input_string, dance_move):
     find_programs = argument.split('/')
     program_pos = [i for i, p in enumerate(input_string) if p in find_programs]
     return move(input_string, 'x%d/%d' % (program_pos[0], program_pos[1]))
+
+def dance(start_configuration, choreography):
+  configuration = start_configuration
+  for step in choreography:
+    configuration = move(configuration, step)
+  return configuration
+
