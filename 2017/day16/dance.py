@@ -12,17 +12,33 @@ def move(input_string, dance_move):
     program_pos = [i for i, p in enumerate(input_string) if p in find_programs]
     return move(input_string, 'x%d/%d' % (program_pos[0], program_pos[1]))
 
-def dance(start_configuration, choreography):
+def dance_gen(start_configuration, choreography):
   configuration = start_configuration
   for step in choreography:
     configuration = move(configuration, step)
   return configuration
 
-def aoc_choreo():
+def dance(start_configuration, choreography, number_of_executions):
+  configuration = start_configuration
+  seen_configurations = []
+  looping_at = None
+  for i in xrange(number_of_executions):
+    configuration = dance_gen(configuration, choreography)
+    if configuration in seen_configurations:
+      looping_at = i
+      break
+    seen_configurations.append(configuration)
+  if looping_at is not None:
+    configuration = start_configuration
+    for i in xrange(number_of_executions % looping_at):
+      configuration = dance_gen(configuration, choreography)
+  return configuration
+    
+
+def aoc_choreo(number_of_executions):
   choreography = []
   with open('choreography') as f:
     choreography += ''.join(f.readlines()).strip().split(',')
   start_configuration = ''.join([chr(ord('a') + i) for i in range(16)])
-  print start_configuration
-  return dance(start_configuration, choreography)
+  return dance(start_configuration, choreography, number_of_executions)
 
