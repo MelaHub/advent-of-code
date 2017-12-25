@@ -29,6 +29,6 @@ class DefragTest(unittest.TestCase):
   def test_are_statuses_equal(self, input_values, expected_judgment):
     self.assertEquals(expected_judgment, Judge([]).are_statuses_equal(input_values))
  
-  def assert_correct_judgment(self):
+  def test_assert_correct_judgment(self):
     judge = Judge([GenratorA(65), GeneratorB(8921)])
-    self.assertEquals(5, judge.judge(5))
+    self.assertEquals(1, judge.judge(5))

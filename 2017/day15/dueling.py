@@ -32,3 +32,13 @@ class Judge(object):
 
   def are_statuses_equal(self, values):
     return len(set([bin(v)[-16:] for v in values])) == 1
+
+  def judge(self, n_rounds):
+    correct_rounds = 0
+    for i in range(n_rounds):
+      for generator in self.generators:
+        generator.get_next()
+      if are_statuses_equal([gen.curr_value for gen in self.generators]):
+        correct_rounds += 1
+    return correct_rounds
+    
