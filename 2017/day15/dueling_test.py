@@ -17,4 +17,18 @@ class DefragTest(unittest.TestCase):
     for i in range(0, 5):
       values.append(gen.gen_next())
     self.assertEquals(expected_values, values)
-  
+
+  @data(
+    ([1092455, 430625591], False),
+    ([1181022009, 1233683848], False),
+    ([245556042, 1431495498], True),
+    ([1744312007, 137874439], False),
+    ([1352636452, 285222916], False),
+  )
+  @unpack
+  def test_are_statuses_equal(self, input_values, expected_judgment):
+    self.assertEquals(expected_judgment, Judge([]).are_statuses_equal(input_values))
+ 
+  def assert_correct_judgment(self):
+    judge = Judge([GenratorA(65), GeneratorB(8921)])
+    self.assertEquals(5, judge.judge(5))

@@ -21,3 +21,14 @@ class GeneratorB(Generator):
   def __init__(self, starting_value):
     factor = 48271
     super(GeneratorB, self).__init__(starting_value, factor)
+
+
+class Judge(object):
+
+  generators = []
+
+  def __init__(self, list_generators):
+    self.generators = list_generators
+
+  def are_statuses_equal(self, values):
+    return len(set([bin(v)[-16:] for v in values])) == 1
