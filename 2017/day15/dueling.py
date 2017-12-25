@@ -37,8 +37,8 @@ class Judge(object):
     correct_rounds = 0
     for i in range(n_rounds):
       for generator in self.generators:
-        generator.get_next()
-      if are_statuses_equal([gen.curr_value for gen in self.generators]):
+        generator.gen_next()
+      if self.are_statuses_equal([gen.curr_value for gen in self.generators]):
         correct_rounds += 1
     return correct_rounds
     
