@@ -2,25 +2,32 @@ class Generator(object):
   
   curr_value = None
   factor = None
-  remainder_of = 2147483647
 
   def __init__(self, starting_value, factor):
     self.curr_value = starting_value
     self.factor = factor
 
   def gen_next(self):
+    return NotImplementedError()
+
+class GeneratorFirstHalf(Generator):
+
+  remainder_of = 2147483647
+
+  def gen_next(self):
     self.curr_value = (self.curr_value * self.factor) % self.remainder_of
     return self.curr_value
+  
 
-class GeneratorA(Generator):
+class GeneratorAFirstHalf(GeneratorFirstHalf):
   def __init__(self, starting_value):
     factor = 16807
-    super(GeneratorA, self).__init__(starting_value, factor)
+    super(GeneratorAFirstHalf, self).__init__(starting_value, factor)
 
-class GeneratorB(Generator):
+class GeneratorBFirstHalf(GeneratorFirstHalf):
   def __init__(self, starting_value):
     factor = 48271
-    super(GeneratorB, self).__init__(starting_value, factor)
+    super(GeneratorBFirstHalf, self).__init__(starting_value, factor)
 
 
 class Judge(object):
