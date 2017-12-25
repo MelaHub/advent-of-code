@@ -18,3 +18,6 @@ class DefragTest(unittest.TestCase):
   def test_dance(self):
     choreography = ['s1', 'x3/4', 'pe/b']
     self.assertEquals('baedc', dance('abcde', choreography))
+
+  def test_aoc_dance(self):
+    self.assertEquals('bkgcdefiholnpmja', aoc_choreo())

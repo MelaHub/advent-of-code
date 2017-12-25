@@ -18,3 +18,11 @@ def dance(start_configuration, choreography):
     configuration = move(configuration, step)
   return configuration
 
+def aoc_choreo():
+  choreography = []
+  with open('choreography') as f:
+    choreography += ''.join(f.readlines()).strip().split(',')
+  start_configuration = ''.join([chr(ord('a') + i) for i in range(16)])
+  print start_configuration
+  return dance(start_configuration, choreography)
+
