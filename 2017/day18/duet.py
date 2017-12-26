@@ -22,15 +22,38 @@ class Processor(object):
     elif operator == 'add':
       register, value_or_register = parameters.split(' ')
       self.registers[register] = self.registers.get(register, 0) + self._get_value(value_or_register)
+    elif operator == 'mul':
+      register, value_or_register = parameters.split(' ')
+      self.registers[register] = self.registers.get(register, 0) * self._get_value(value_or_register)
     elif operator == 'mod':
       register, value_or_register = parameters.split(' ')
       self.registers[register] = self.registers.get(register, 0) % self._get_value(value_or_register)
     elif operator == 'rcv':
       if self.registers.get(parameters, 0) > 0:
-        frequency = self.registers[parameters]
+        frequency = self.last_played_sound
     elif operator == 'jgz':
       register, value_or_register = parameters.split(' ')
       if self.registers.get(register, 0) > 0:
         self.curr_instruction += (self._get_value(value_or_register) - 1)
     return frequency
-        
+      
+  def play_program(self, instructions):
+    self.curr_instruction = 0
+    frequency = None
+    while True:
+      if self.curr_instruction < 0 or self.curr_instruction >= len(instructions):
+        break
+      instruction = instructions[self.curr_instruction]
+      frequency = self.execute(instruction)
+      if frequency is not None:
+        break
+      self.curr_instruction += 1
+    return frequency
+
+
+def play_instructions_from_file():
+  instructions = []
+  with open('duet') as f:
+    instructions += [row.strip() for row in f.readlines()]
+  processor = Processor()
+  return processor.play_program(instructions)
