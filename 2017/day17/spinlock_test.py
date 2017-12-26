@@ -31,5 +31,6 @@ class DefragTest(unittest.TestCase):
       final_index = len(final_buffer)
     test_buffer = final_buffer[start_index:final_index]
     self.assertEqual(expected_buffer, test_buffer)
-    
 
+  def test_value_after_zero(self):
+    self.assertEquals(31220910, check_position_at(50000000, 337, 1))
