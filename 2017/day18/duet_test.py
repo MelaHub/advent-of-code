@@ -36,12 +36,12 @@ class DuetTest(unittest.TestCase):
     self.assertEquals(self._dict_to_sorted_tuples(expected_registers),
                       self._dict_to_sorted_tuples(processor.registers))
     self.assertEquals(expected_sound, processor.last_played_sound)
-    self.assertEquals(expected_frequency, recovered_frequency)
+    self.assertEquals((expected_frequency, True), recovered_frequency)
     self.assertEquals(new_current_instruction, processor.curr_instruction)
 
   def test_execute_sync(self):
-    processor1 = ProcessorSync()
-    processor2 = ProcessorSync()
+    processor1 = ProcessorSync(1)
+    processor2 = ProcessorSync(2)
     processor1.send_data_to(processor2)
     processor1.execute('set a 42')
     processor1.execute('snd a')
@@ -49,17 +49,21 @@ class DuetTest(unittest.TestCase):
     processor1.execute('rcv b')
     self.assertEquals('b', processor1.receive_register)
     processor1.execute('add b 1')
-    self.assertEquals('b', processor1.receive_register)
-    self.assertEquals(0, processor1.registers.get('b', 0))
     processor1.send_value(42)
+    processor1.execute('rcv b')
     self.assertEquals(None, processor1.receive_register)
     self.assertEquals(42, processor1.registers.get('b', 0))
     processor1.execute('add b 1')
-    self.assertEquals(None, processor1.receive_register)
     self.assertEquals(43, processor1.registers.get('b', 0))
+    processor1.send_value(7)
+    processor1.send_value(8)
+    processor1.execute('rcv q')
+    self.assertEquals(None, processor1.receive_register)
+    self.assertEquals(7, processor1.registers.get('q', 0))
+    self.assertEquals([8], processor1.input_queue)
 
 
-  TEST_CASE = [
+  TEST_CASE1 = [
     'set a 1',
     'add a 2',
     'mul a a',
@@ -71,10 +75,27 @@ class DuetTest(unittest.TestCase):
     'set a 1',
     'jgz a -2'
   ]
+
+  TEST_CASE2 = [
+    'snd 1',
+    'snd 2',
+    'snd p',
+    'rcv a',
+    'rcv b',
+    'rcv c',
+    'rcv d',
+  ]
    
   def test_program(self):
     processor = Processor()
-    self.assertEquals(4, processor.play_program(self.TEST_CASE)) 
+    self.assertEquals(4, processor.play_program(self.TEST_CASE1)) 
 
   def test_input(self):
     self.assertEquals(1187, play_instructions_from_file())
+
+  def test_play_duet(self):
+    self.assertEquals(1, play_duet(self.TEST_CASE1))
+    self.assertEquals(3, play_duet(self.TEST_CASE2))
+
+  def test_play_duet_from_file(self):
+    self.assertEquals(5969, play_duet_from_file())
