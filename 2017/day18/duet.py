@@ -1,3 +1,6 @@
+WAITING_FOR_DATA = 'WAITING_FOR_DATA'
+IDLE = 'IDLE'
+
 class Processor(object):
 
   registers = {}
@@ -10,9 +13,11 @@ class Processor(object):
     else:
       return self.registers.get(input_name, 0)
 
+  def _parse_instruction(self, instruction):
+    return instruction[0:3], instruction[4:]
+
   def execute(self, instruction):
-    operator = instruction[0:3]
-    parameters = instruction[4:]
+    operator, parameters = self._parse_instruction(instruction)
     frequency = None
     if operator == 'snd':
       self.last_played_sound = self.registers.setdefault(parameters, 0)
@@ -49,6 +54,45 @@ class Processor(object):
         break
       self.curr_instruction += 1
     return frequency
+
+
+class ProcessorSync(Processor):
+
+  input_queue = None
+  another_processor = None
+  number_of_received_values = 0
+  receive_register = None
+
+  def __init__(self):
+    self.input_queue = []
+
+  def send_data_to(self, another_processor):
+    self.another_processor = another_processor
+
+  def execute(self, instruction):
+    if self.receive_register is not None:
+      return None
+    operator, parameters = self._parse_instruction(instruction)
+    frequency = super(ProcessorSync, self).execute(instruction)
+    if operator == 'snd':
+      self.another_processor.send_value(self.registers.get(parameters, 0))
+    elif operator == 'rcv':
+      value = None
+      self.receive_register = parameters
+      if len(self.input_queue):
+        self.consume_data()
+    return frequency
+
+  def send_value(self, value):
+    self.input_queue.append(value)
+    if self.receive_register is not None:
+        self.consume_data()
+
+  def consume_data(self):
+    value, input_queue = self.input_queue[0], self.input_queue[1:]
+    self.registers[self.receive_register] = value
+    self.number_of_received_values += 1
+    self.receive_register = None
 
 
 def play_instructions_from_file():

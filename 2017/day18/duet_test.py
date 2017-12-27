@@ -39,6 +39,26 @@ class DuetTest(unittest.TestCase):
     self.assertEquals(expected_frequency, recovered_frequency)
     self.assertEquals(new_current_instruction, processor.curr_instruction)
 
+  def test_execute_sync(self):
+    processor1 = ProcessorSync()
+    processor2 = ProcessorSync()
+    processor1.send_data_to(processor2)
+    processor1.execute('set a 42')
+    processor1.execute('snd a')
+    self.assertEquals([42], processor2.input_queue)
+    processor1.execute('rcv b')
+    self.assertEquals('b', processor1.receive_register)
+    processor1.execute('add b 1')
+    self.assertEquals('b', processor1.receive_register)
+    self.assertEquals(0, processor1.registers.get('b', 0))
+    processor1.send_value(42)
+    self.assertEquals(None, processor1.receive_register)
+    self.assertEquals(42, processor1.registers.get('b', 0))
+    processor1.execute('add b 1')
+    self.assertEquals(None, processor1.receive_register)
+    self.assertEquals(43, processor1.registers.get('b', 0))
+
+
   TEST_CASE = [
     'set a 1',
     'add a 2',
@@ -57,4 +77,4 @@ class DuetTest(unittest.TestCase):
     self.assertEquals(4, processor.play_program(self.TEST_CASE)) 
 
   def test_input(self):
-    self.assertEquals(7, play_instructions_from_file())
+    self.assertEquals(1187, play_instructions_from_file())
