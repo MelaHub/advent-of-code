@@ -36,3 +36,9 @@ class ParticlesTest(unittest.TestCase):
     for expected_particle in expected_evolution:
       particle.evolve()
       self.assertEquals(expected_particle, particle)
+
+  def test_distance(self):
+    particle = parse_particle('p=< 3,4,5>, v=< 2,0,0>, a=<-1,0,0>')
+    another_particle = parse_particle('p=<0,0,0>, v=<0,0,0>, a=<0,0,0>')
+    self.assertEquals(12, particle.manhattan_distance(another_particle))
+    

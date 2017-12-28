@@ -20,6 +20,9 @@ class Coordinate(object):
     self.y = other.y
     self.z = other.z
 
+  def distance(self, other):
+    return abs(self.x - other.x) + abs(self.y - other.y) + abs(self.z - other.z)
+
 
 class Particle(object):
 
@@ -40,6 +43,9 @@ class Particle(object):
   def evolve(self):
     self.velocity.sum(self.acceleration)
     self.position.sum(self.velocity)
+
+  def manhattan_distance(self, other):
+    return self.position.distance(other.position)
 
 
 def parse_input_to_coordinate(input_string):
