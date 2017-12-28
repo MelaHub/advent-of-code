@@ -72,24 +72,14 @@ def particles_from_file():
   return particles
 
 def get_min_in_collection(get_property_from_particle, particles):
+  origin = Coordinate(0, 0, 0)
   min_property = min([get_property_from_particle(particle).distance(origin) for _, particle in particles])
-  return [(i, particle) for (i, particle) in particles if get_property_from_particle(particle_.distance(origin) == min_property]
+  return [(i, particle) for (i, particle) in particles if get_property_from_particle(particle).distance(origin) == min_property]
 
 def closest_to_origin(particles):
-  origin = Coordinate(0, 0, 0)
-  particles_with_min_acc = get_min_in_collection(lambda x: x.acceleration, enumerate(particles))
+  particles_with_min_acc = get_min_in_collection(lambda x: x.acceleration, [(i, particle) for (i, particle) in enumerate(particles)])
   particles_with_min_vel = get_min_in_collection(lambda x: x.velocity, particles_with_min_acc)
   particles_with_min_pos = get_min_in_collection(lambda x: x.position, particles_with_min_vel)
-   
-  #  min_acc = min([particle.acceleration.distance(origin) for particle in particles])
-  #  particles_with_min_acc = [particle for particle in particles
-  #                            if particle.acceleration.distance(origin) == min_acc]
-  #  min_velocity = min([particle.velocity.distance(origin) for particle in particles_with_min_acc])
-  #  particles_with_min_vel = [particle for particle in particles_with_min_acc
-  #                            if particle.velocity.distance(origin) == min_velocity]
-  #  min_pos = min([particle.position.distance(origin) for particle in particles_with_min_vel])
-  #  particles_with_min_pos = [particle for particle in particles_with_min_vel
-  #                            if particle.position.distance(origin) == min_pos]
   return particles_with_min_pos
   
 
