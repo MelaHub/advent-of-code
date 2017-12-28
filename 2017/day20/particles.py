@@ -15,6 +15,11 @@ class Coordinate(object):
   def __eq__(self, other):
     return self.x == other.x and self.y == other.y and self.z == other.z
 
+  def sum(self, other):
+    self.x += other.x
+    self.y = other.y
+    self.z = other.z
+
 
 class Particle(object):
 
@@ -31,6 +36,10 @@ class Particle(object):
     return (self.position == other.position and 
       self.velocity == other.velocity and
       self.acceleration == other.acceleration)
+
+  def evolve(self):
+    self.velocity.sum(self.acceleration)
+    self.position.sum(self.velocity)
 
 
 def parse_input_to_coordinate(input_string):
