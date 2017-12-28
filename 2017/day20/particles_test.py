@@ -41,4 +41,8 @@ class ParticlesTest(unittest.TestCase):
     particle = parse_particle('p=< 3,4,5>, v=< 2,0,0>, a=<-1,0,0>')
     another_particle = parse_particle('p=<0,0,0>, v=<0,0,0>, a=<0,0,0>')
     self.assertEquals(12, particle.manhattan_distance(another_particle))
-    
+
+  def test_closest_to_origin(self):
+    particles = [parse_particle(p) for p in self.TEST_PARTICLES]
+    self.assertEquals([particles[0]], closest_to_origin(particles))
+

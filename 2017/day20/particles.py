@@ -15,6 +15,9 @@ class Coordinate(object):
   def __eq__(self, other):
     return self.x == other.x and self.y == other.y and self.z == other.z
 
+  def __str__(self):
+    return '%d, %d, %d' % (self.x, self.y, self.z)
+
   def sum(self, other):
     self.x += other.x
     self.y = other.y
@@ -40,6 +43,9 @@ class Particle(object):
       self.velocity == other.velocity and
       self.acceleration == other.acceleration)
 
+  def __str__(self):
+    return 'p=<%s>, v=<%s>, a=<%s>' % (self.position, self.velocity, self.acceleration)
+
   def evolve(self):
     self.velocity.sum(self.acceleration)
     self.position.sum(self.velocity)
@@ -58,3 +64,26 @@ def parse_particle(input_string):
   return Particle(parse_input_to_coordinate(parse_input.group('position')),
                   parse_input_to_coordinate(parse_input.group('velocity')),
                   parse_input_to_coordinate(parse_input.group('acceleration')))
+
+def particles_from_file():
+  particles = []
+  with open('particles') as f:
+    particles += [parse_particle(row.strip()) for row in f.readlines()]
+  return particles
+
+def closest_to_origin(particles):
+  origin = Coordinate(0, 0, 0)
+  min_acc = min([particle.acceleration.distance(origin) for particle in particles])
+  particles_with_min_acc = [particle for particle in particles
+                            if particle.acceleration.distance(origin) == min_acc]
+  min_velocity = min([particle.velocity.distance(origin) for particle in particles_with_min_acc])
+  particles_with_min_vel = [particle for particle in particles_with_min_acc
+                            if particle.velocity.distance(origin) == min_velocity]
+  min_pos = min([particle.position.distance(origin) for particle in particles_with_min_vel])
+  particles_with_min_pos = [particle for particle in particles_with_min_vel
+                            if particle.position.distance(origin) == min_pos]
+  return particles_with_min_pos
+  
+
+
+  
