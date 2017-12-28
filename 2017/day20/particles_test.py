@@ -44,5 +44,4 @@ class ParticlesTest(unittest.TestCase):
 
   def test_closest_to_origin(self):
     particles = [parse_particle(p) for p in self.TEST_PARTICLES]
-    self.assertEquals([particles[0]], closest_to_origin(particles))
-
+    self.assertEquals([(0, particles[0])], closest_to_origin(particles))
