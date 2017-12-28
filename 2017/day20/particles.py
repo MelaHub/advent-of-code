@@ -81,6 +81,9 @@ def closest_to_origin(particles):
   particles_with_min_vel = get_min_in_collection(lambda x: x.velocity, particles_with_min_acc)
   particles_with_min_pos = get_min_in_collection(lambda x: x.position, particles_with_min_vel)
   return particles_with_min_pos
+
+def closest_to_origin_from_file():
+  return closest_to_origin(particles_from_file())
   
 
 
