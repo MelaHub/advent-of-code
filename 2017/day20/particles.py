@@ -88,7 +88,7 @@ class Particle(object):
       for i, (a, b, c) in enumerate(zip(a_xyz, b_xyz, c_xyz))
       if pos_diff.to_tuple()[i] != 0
     ]
-    integer_collisions_xyz = [[int(t) for t in collision_xyz if t.is_integer()] for collision_xyz in collision_at if collision_xyz is not None]
+    integer_collisions_xyz = [[int(t) for t in collision_xyz if t.is_integer() and t >= 0] for collision_xyz in collision_at if collision_xyz is not None]
     integer_collisions = set()
     if len(integer_collisions_xyz):
       integer_collisions = set(integer_collisions_xyz[0])
@@ -135,6 +135,10 @@ def collisions_safe(particles):
       if len(collision_on):
         collisions_time.append((particles[i], particles[j], collision_on))
   not_colliding_particles = [p for p in particles]
+  t = min([t for _, _, times in collisions_time for t in times])
+  print 'There are %d particles in total and %d are colliding' % (
+    len(not_colliding_particles), len(collisions_time))
+  print 'first collision happening at %d, last at %d' % (t, max([t for _, _, times in collisions_time for t in times]))
   t = 0
   while len(collisions_time):
     colliding_particles = set()
@@ -142,13 +146,18 @@ def collisions_safe(particles):
       if t in collision_on:
         colliding_particles.add(particle1)
         colliding_particles.add(particle2)
+    print 'Found %d particles colliding at time %d' % (len(colliding_particles), t)
     for particle in colliding_particles:
       not_colliding_particles.remove(particle)
     collisions_time = [(p1, p2, time) 
       for (p1, p2, time) in collisions_time 
       if p1 not in colliding_particles and p2 not in colliding_particles]
+    print 'There are %d particles left for collision' % len(collisions_time)
     t += 1
   return not_colliding_particles
+
+def collisions_safe_from_file():
+  return collisions_safe(particles_from_file())
       
   
     

@@ -64,4 +64,6 @@ class ParticlesTest(unittest.TestCase):
     self.assertEquals(expected_collision_time, particle1.will_collide_on(particle2))
 
   def test_collisions_safe(self):
-    self.assertEquals([parse_particle(self.TEST_PARTICLES2[3])], collisions_safe([parse_particle(p) for p in self.TEST_PARTICLES2]))
+    # self.assertEquals([parse_particle(self.TEST_PARTICLES2[3])], collisions_safe([parse_particle(p) for p in self.TEST_PARTICLES2]))
+    no_collisions = collisions_safe_from_file()
+    self.assertEquals(0, len(no_collisions))
