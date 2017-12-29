@@ -13,7 +13,7 @@ class FractalTest(unittest.TestCase):
   }
 
   @data(
-    (STARTING_PATTERN, TEST_RULES['.#./..#/###'].split('/')),
+    (STARTING_SQUARE, TEST_RULES['.#./..#/###'].split('/')),
     (['#.', '..'], TEST_RULES['../.#'].split('/')),
   )
   @unpack
@@ -29,7 +29,7 @@ class FractalTest(unittest.TestCase):
     self.assertEquals(expected_squares, rotate_flip_square(input_square))
 
   @data(
-    (STARTING_PATTERN, STARTING_PATTERN),
+    (STARTING_SQUARE, STARTING_SQUARE),
     (['..', '.#'], ['..', '.#']),
     (['#..#', '....', '....', '#..#'], [['#.', '..'], ['.#', '..'], ['..', '#.'], ['..', '.#']]),
     (['##.##....', '##.....##', '#.#.#.#.#', '.#.#.#.#.', '.#...#...', '.........', '..##..##.', '#.....#..', '.#.##....'], [['##.', '##.', '#.#'], ['##.', '...', '.#.'], ['...', '.##', '#.#'], ['.#.', '.#.', '...'], ['#.#', '..#', '...'], ['.#.', '...', '...'], ['..#', '#..', '.#.'], ['#..', '...', '##.'], ['##.', '#..', '...']]),
@@ -38,3 +38,5 @@ class FractalTest(unittest.TestCase):
   def test_split_in_sub(self, input_square, expected_squares):
     self.assertEquals(expected_squares, split_square(input_square))
 
+  def test_draw_fractal(self):
+    self.assertEquals([['##.', '#..', '...'], ['##.', '#..', '...'], ['##.', '#..', '...'], ['##.', '#..', '...']], draw_fractal(STARTING_SQUARE, 2, self.TEST_RULES))

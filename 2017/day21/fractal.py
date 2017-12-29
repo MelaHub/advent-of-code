@@ -1,4 +1,4 @@
-STARTING_PATTERN = [
+STARTING_SQUARE = [
   '.#.',
   '..#',
   '###'
@@ -11,11 +11,11 @@ def rotate_flip_square(input_square):
   rotate270 = rotatezip(rotate180)
   return [input_square, rotate90, rotate180, rotate270, [row[::-1] for row in input_square]]
 
-def replace_square(input_square, test_rules):
+def replace_square(input_square, sub_rules):
   rotated_flipped_input = rotate_flip_square(input_square)
   matching_output = None
   for square in rotated_flipped_input:
-    match = test_rules.get('/'.join(square))
+    match = sub_rules.get('/'.join(square))
     if match is not None:
       matching_output = match
       break
@@ -36,3 +36,11 @@ def split_square(input_square):
   elif len(input_square) % 3 == 0:
     return split_by_factor(input_square, 3)
   return Exception('HEEEELP a weird square!!!')
+
+def draw_fractal(input_square, round_left, sub_rules):
+  if round_left == 0:
+    return input_square
+  new_square = replace_square(input_square, sub_rules)
+  sub_squares = split_square(new_square)
+  return [draw_fractal(sub_square, round_left - 1, sub_rules) for sub_square in sub_squares]
+  
