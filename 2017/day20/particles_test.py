@@ -8,7 +8,14 @@ class ParticlesTest(unittest.TestCase):
 
   TEST_PARTICLES = [
     'p=< 3,0,0>, v=< 2,0,0>, a=<-1,0,0>',
-    'p=< 4,0,0>, v=< 0,0,0>, a=<-2,0,0>'
+    'p=<4,0,0>, v=< 0,0,0>, a=<-2,0,0>'
+  ]
+
+  TEST_PARTICLES2 = [
+    'p=<-6,0,0>, v=< 3,0,0>, a=< 0,0,0>',
+    'p=<-4,0,0>, v=< 2,0,0>, a=< 0,0,0>',
+    'p=<-2,0,0>, v=< 1,0,0>, a=< 0,0,0>',
+    'p=< 3,0,0>, v=<-1,0,0>, a=< 0,0,0>'
   ]
 
   @data(
@@ -46,3 +53,15 @@ class ParticlesTest(unittest.TestCase):
     particles = [parse_particle(p) for p in self.TEST_PARTICLES]
     self.assertEquals([(0, particles[0])], closest_to_origin(particles))
     self.assertEquals(300, closest_to_origin_from_file()[0][0])
+
+  @data(
+    (parse_particle('p=<-6,0,0>, v=<0,0,0>, a=<0,0,0>'), parse_particle('p=<-4,0,0>, v=<0,0,0>, a=<0,0,0>'), []),
+    (parse_particle('p=<-4,0,0>, v=<2,0,0>, a=<0,0,0>'), parse_particle('p=<-6,0,0>, v=<3,0,0>, a=<0,0,0>'), [2]),
+    (parse_particle(TEST_PARTICLES[1]), parse_particle(TEST_PARTICLES[0]), []),
+  )
+  @unpack
+  def test_collide_on(self, particle1, particle2, expected_collision_time):
+    self.assertEquals(expected_collision_time, particle1.will_collide_on(particle2))
+
+  def test_collisions_safe(self):
+    self.assertEquals([parse_particle(self.TEST_PARTICLES2[3])], collisions_safe([parse_particle(p) for p in self.TEST_PARTICLES2]))
