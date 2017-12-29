@@ -30,8 +30,11 @@ class FractalTest(unittest.TestCase):
 
   @data(
     (STARTING_PATTERN, STARTING_PATTERN),
-    (['..', '.#'], ['..', '.#'])
+    (['..', '.#'], ['..', '.#']),
+    (['#..#', '....', '....', '#..#'], [['#.', '..'], ['.#', '..'], ['..', '#.'], ['..', '.#']]),
+    (['##.##....', '##.....##', '#.#.#.#.#', '.#.#.#.#.', '.#...#...', '.........', '..##..##.', '#.....#..', '.#.##....'], [['##.', '##.', '#.#'], ['##.', '...', '.#.'], ['...', '.##', '#.#'], ['.#.', '.#.', '...'], ['#.#', '..#', '...'], ['.#.', '...', '...'], ['..#', '#..', '.#.'], ['#..', '...', '##.'], ['##.', '#..', '...']]),
   )
   @unpack
-  def test_split_in_fourp(self, input_square, expected_squares):
-    self.assertEquals(expected_squares, split_in_four(input_square))
+  def test_split_in_sub(self, input_square, expected_squares):
+    self.assertEquals(expected_squares, split_square(input_square))
+
