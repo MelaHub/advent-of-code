@@ -19,4 +19,8 @@ def replace_square(input_square, test_rules):
     if match is not None:
       matching_output = match
       break
-  return matching_output.split('/') 
+  return matching_output.split('/')
+
+def split_in_four(input_square):
+  if len(input_square) == 2 or len(input_square) == 3:
+    return input_square

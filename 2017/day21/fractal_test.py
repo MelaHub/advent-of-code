@@ -27,3 +27,11 @@ class FractalTest(unittest.TestCase):
   @unpack
   def test_rotate_flip_square(self, input_square, expected_squares):
     self.assertEquals(expected_squares, rotate_flip_square(input_square))
+
+  @data(
+    (STARTING_PATTERN, STARTING_PATTERN),
+    (['..', '.#'], ['..', '.#'])
+  )
+  @unpack
+  def test_split_in_fourp(self, input_square, expected_squares):
+    self.assertEquals(expected_squares, split_in_four(input_square))
