@@ -12,5 +12,11 @@ def rotate_flip_square(input_square):
   return [input_square, rotate90, rotate180, rotate270, [row[::-1] for row in input_square]]
 
 def replace_square(input_square, test_rules):
-  return test_rules.get('/'.join(input_square)).split('/')
- 
+  rotated_flipped_input = rotate_flip_square(input_square)
+  matching_output = None
+  for square in rotates_flipped_input:
+    match = test_rules.get('/'.join(square))
+    if match is not None:
+      matching_output = match
+      break
+  return matching_output.split('/') 
