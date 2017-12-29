@@ -40,3 +40,4 @@ class FractalTest(unittest.TestCase):
 
   def test_draw_fractal(self):
     self.assertEquals([['##.', '#..', '...'], ['##.', '#..', '...'], ['##.', '#..', '...'], ['##.', '#..', '...']], draw_fractal(STARTING_SQUARE, 2, self.TEST_RULES))
+    self.assertEquals(12, count_pixels_on(STARTING_SQUARE, 2, self.TEST_RULES))

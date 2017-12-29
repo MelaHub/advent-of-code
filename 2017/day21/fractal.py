@@ -43,4 +43,6 @@ def draw_fractal(input_square, round_left, sub_rules):
   new_square = replace_square(input_square, sub_rules)
   sub_squares = split_square(new_square)
   return [draw_fractal(sub_square, round_left - 1, sub_rules) for sub_square in sub_squares]
-  
+ 
+def count_pixels_on(input_square, round_left, sub_rules):
+  return len([c for square in draw_fractal(input_square, round_left, sub_rules) for row in square for c in row if c == '#']) 
