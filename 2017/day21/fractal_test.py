@@ -14,6 +14,7 @@ class FractalTest(unittest.TestCase):
 
   @data(
     (STARTING_PATTERN, TEST_RULES['.#./..#/###'].split('/')),
+    (['#.', '..'], TEST_RULES['../.#'].split('/')),
   )
   @unpack
   def test_parse_input(self, input_square, expected_output):

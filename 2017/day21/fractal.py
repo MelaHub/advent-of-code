@@ -14,7 +14,7 @@ def rotate_flip_square(input_square):
 def replace_square(input_square, test_rules):
   rotated_flipped_input = rotate_flip_square(input_square)
   matching_output = None
-  for square in rotates_flipped_input:
+  for square in rotated_flipped_input:
     match = test_rules.get('/'.join(square))
     if match is not None:
       matching_output = match
