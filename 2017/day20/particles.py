@@ -93,7 +93,7 @@ class Particle(object):
     if len(integer_collisions_xyz):
       integer_collisions = set(integer_collisions_xyz[0])
       for t in integer_collisions_xyz[1:]:
-        integer_collisions.intersection(set(t))
+        integer_collisions = integer_collisions.intersection(set(t))
     return list(integer_collisions)
 
 def parse_input_to_coordinate(input_string):
@@ -136,9 +136,6 @@ def collisions_safe(particles):
         collisions_time.append((particles[i], particles[j], collision_on))
   not_colliding_particles = [p for p in particles]
   t = min([t for _, _, times in collisions_time for t in times])
-  print 'There are %d particles in total and %d are colliding' % (
-    len(not_colliding_particles), len(collisions_time))
-  print 'first collision happening at %d, last at %d' % (t, max([t for _, _, times in collisions_time for t in times]))
   t = 0
   while len(collisions_time):
     colliding_particles = set()
@@ -146,19 +143,37 @@ def collisions_safe(particles):
       if t in collision_on:
         colliding_particles.add(particle1)
         colliding_particles.add(particle2)
-    print 'Found %d particles colliding at time %d' % (len(colliding_particles), t)
     for particle in colliding_particles:
       not_colliding_particles.remove(particle)
     collisions_time = [(p1, p2, time) 
       for (p1, p2, time) in collisions_time 
       if p1 not in colliding_particles and p2 not in colliding_particles]
-    print 'There are %d particles left for collision' % len(collisions_time)
     t += 1
   return not_colliding_particles
 
 def collisions_safe_from_file():
   return collisions_safe(particles_from_file())
-      
-  
-    
 
+def collisions_evolution(particles):
+  live_particles = [p for p in particles]
+  t = 0
+  last_change_t = 0
+  while True:
+    colliding_particles = set()
+    for i in range(len(live_particles) - 1):
+      for j in range(i + 1, len(live_particles)):
+        if live_particles[i].manhattan_distance(live_particles[j]) == 0:
+          colliding_particles.add(live_particles[i])
+          colliding_particles.add(live_particles[j])
+    live_particles = [p for p in live_particles if p not in colliding_particles]
+    for p in live_particles:
+      p.evolve()
+    if len(colliding_particles):
+      last_change_t = t
+    if t - last_change_t > 30:
+      break
+    t += 1
+  return live_particles
+          
+def collisions_evolution_from_file():
+  return collisions_evolution(particles_from_file())
