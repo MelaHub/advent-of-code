@@ -90,8 +90,8 @@ class VirusTest(unittest.TestCase):
     grid.move_virus(100)
     self.assertEquals(26, grid.number_of_caused_infections)
 
-  # def test_move_super_virus_from_file(self):
-  #   input_grid = get_grid_from_file()
-  #   grid = init_grid(input_grid, Virus)
-  #   grid.move_virus(10000)
-  #   self.assertEquals(5176, grid.number_of_caused_infections)
+  def test_move_super_virus_from_file(self):
+    input_grid = get_grid_from_file()
+    grid = init_grid(input_grid, SuperVirus)
+    grid.move_virus(10000000)
+    self.assertEquals(5176, grid.number_of_caused_infections)
