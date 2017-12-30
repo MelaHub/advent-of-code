@@ -14,6 +14,7 @@ class Virus(object):
   current_position = None
 
   def __init__(self, coordinate):
+    print 'Virus starts at position (%s, %s, %s)' % (coordinate.x, coordinate.y, coordinate.direction)
     self.current_position = coordinate
 
   def move_and_infect(self, current_cell_status):
@@ -44,7 +45,16 @@ class ClusterMap(object):
 
   infected_cells = None
   virus = None
-  
+ 
+  def __init__(self, initial_grid, virus):
+    self.infected_cells = set()
+    for i in range(len(initial_grid)):
+      for j in range(len(initial_grid[i])):
+        if initial_grid[j][i] == INFECTED_CELL:
+          self.infected_cells.add((j, i))
+    self.virus = virus
 
-  
-  
+def init_grid(grid):
+  virus = Virus(Coordinates(round(float(len(grid[0]) / 2)), round(float(len(grid) / 2)), UP))
+  grid = ClusterMap(grid, virus)
+  return grid

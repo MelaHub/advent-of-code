@@ -29,4 +29,9 @@ class VirusTest(unittest.TestCase):
     output_cell_status = virus.move_and_infect(input_cell_status)
     self.assertEquals(expected_position, virus.current_position)
     self.assertEquals(expected_cell_status, output_cell_status)
-    
+   
+  def test_init_grid(self):
+    grid = init_grid(self.TEST_MAP)
+    self.assertEquals(set([(0, 2), (1, 0)]), grid.infected_cells)
+    self.assertEquals(Coordinates(1, 1, UP), grid.virus.current_position)
+     
