@@ -1,8 +1,8 @@
 from collections import namedtuple
 
 INFECTED_CELL = '#'
-WEAKENED = 'W'
-FLAGGED = 'F'
+WEAKENED_CELL = 'W'
+FLAGGED_CELL = 'F'
 CLEAN_CELL = '.'
 UP = 'UP'
 DOWN = 'DOWN'
@@ -19,9 +19,6 @@ class BasicVirus(object):
     print 'Virus starts at position (%s, %s, %s)' % (coordinate.x, coordinate.y, coordinate.direction)
     self.current_position = coordinate
 
-
-class Virus(BasicVirus):
-
   def move_right(self):
     self.current_position = Coordinates(self.current_position.x + 1, self.current_position.y, RIGHT)
 
@@ -33,6 +30,10 @@ class Virus(BasicVirus):
 
   def move_up(self):
     self.current_position = Coordinates(self.current_position.x, self.current_position.y - 1, UP)
+
+
+
+class Virus(BasicVirus):
 
   def move_and_infect(self, current_cell_status):
     new_status = None
@@ -59,10 +60,52 @@ class Virus(BasicVirus):
     return new_status
 
 
-class StrongerVirus(BasicVirus):
+class SuperVirus(BasicVirus):
 
   def move_and_infect(self, current_cell_status):
-    raise NotImplementedError()
+    new_status = None
+    if current_cell_status == INFECTED_CELL:
+      new_status = CLEAN_CELL
+      if self.current_position.direction == UP:
+        self.move_right()
+      elif self.current_position.direction == RIGHT:
+        self.move_down()
+      elif self.current_position.direction == DOWN:
+        self.move_left()
+      elif self.current_position.direction == LEFT:
+        self.move_up()
+      new_status = FLAGGED_CELL
+    elif current_cell_status == CLEAN_CELL:
+      if self.current_position.direction == UP:
+        self.move_left()
+      elif self.current_position.direction == RIGHT:
+        self.move_up()
+      elif self.current_position.direction == DOWN:
+        self.move_right()
+      elif self.current_position.direction == LEFT:
+        self.move_down()
+      new_status = WEAKENED_CELL
+    elif current_cell_status == WEAKENED_CELL:
+      if self.current_position.direction == UP:
+        self.move_up()
+      elif self.current_position.direction == RIGHT:
+        self.move_right()
+      elif self.current_position.direction == DOWN:
+        self.move_down()
+      elif self.current_position.direction == LEFT:
+        self.move_left()
+      new_status = INFECTED_CELL
+    elif current_cell_status == FLAGGED_CELL:
+      if self.current_position.direction == UP:
+        self.move_down()
+      elif self.current_position.direction == RIGHT:
+        self.move_left()
+      elif self.current_position.direction == DOWN:
+        self.move_up()
+      elif self.current_position.direction == LEFT:
+        self.move_right()
+      new_status = CLEAN_CELL
+    return new_status
 
 
 class ClusterMap(object):
@@ -94,8 +137,8 @@ class ClusterMap(object):
         self.infected_cells.remove(current_cell_virus)
       
 
-def init_grid(grid):
-  virus = Virus(Coordinates(round(float(len(grid[0]) / 2)), round(float(len(grid) / 2)), UP))
+def init_grid(grid, virus_type):
+  virus = virus_type(Coordinates(round(float(len(grid[0]) / 2)), round(float(len(grid) / 2)), UP))
   grid = ClusterMap(grid, virus)
   return grid
 
