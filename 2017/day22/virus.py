@@ -22,27 +22,39 @@ class BasicVirus(object):
 
 class Virus(BasicVirus):
 
+  def move_right(self):
+    self.current_position = Coordinates(self.current_position.x + 1, self.current_position.y, RIGHT)
+
+  def move_down(self):
+    self.current_position = Coordinates(self.current_position.x, self.current_position.y + 1, DOWN)
+
+  def move_left(self):
+    self.current_position = Coordinates(self.current_position.x - 1, self.current_position.y, LEFT)
+
+  def move_up(self):
+    self.current_position = Coordinates(self.current_position.x, self.current_position.y - 1, UP)
+
   def move_and_infect(self, current_cell_status):
     new_status = None
     if current_cell_status == INFECTED_CELL:
       new_status = CLEAN_CELL
       if self.current_position.direction == UP:
-        self.current_position = Coordinates(self.current_position.x + 1, self.current_position.y, RIGHT)
+        self.move_right()
       elif self.current_position.direction == RIGHT:
-        self.current_position = Coordinates(self.current_position.x, self.current_position.y + 1, DOWN)
+        self.move_down()
       elif self.current_position.direction == DOWN:
-        self.current_position = Coordinates(self.current_position.x - 1, self.current_position.y, LEFT)
+        self.move_left()
       elif self.current_position.direction == LEFT:
-        self.current_position = Coordinates(self.current_position.x, self.current_position.y - 1, UP)
+        self.move_up()
     elif current_cell_status == CLEAN_CELL:
       if self.current_position.direction == UP:
-        self.current_position = Coordinates(self.current_position.x - 1, self.current_position.y, LEFT)
+        self.move_left()
       elif self.current_position.direction == RIGHT:
-        self.current_position = Coordinates(self.current_position.x, self.current_position.y - 1, UP)
+        self.move_up()
       elif self.current_position.direction == DOWN:
-        self.current_position = Coordinates(self.current_position.x + 1, self.current_position.y, RIGHT)
+        self.move_right()
       elif self.current_position.direction == LEFT:
-        self.current_position = Coordinates(self.current_position.x, self.current_position.y + 1, DOWN)
+        self.move_down()
       new_status = INFECTED_CELL
     return new_status
 
