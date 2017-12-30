@@ -83,3 +83,4 @@ class FractalTest(unittest.TestCase):
     self.assertEquals(['##.##.', '#..#..', '......', '##.##.', '#..#..', '......'], draw_fractal(STARTING_SQUARE, 2, self.TEST_RULES))
     self.assertEquals(12, count_pixels_on(2, self.TEST_RULES))
     self.assertEquals(208, count_pixels_on_from_file(5))
+    self.assertEquals(2480380, count_pixels_on_from_file(18))
