@@ -47,5 +47,11 @@ class VirusTest(unittest.TestCase):
     self.assertEquals(5, grid.number_of_caused_infections)
     grid.move_virus(70-7)
     self.assertEquals(41, grid.number_of_caused_infections)
-    grid.move_virus(10000-70)
+    grid.move_virus(10000 - 70)
     self.assertEquals(5587, grid.number_of_caused_infections)
+
+  def test_move_virus_from_file(self):
+    input_grid = get_grid_from_file()
+    grid = init_grid(input_grid)
+    grid.move_virus(10000)
+    self.assertEquals(5176, grid.number_of_caused_infections)

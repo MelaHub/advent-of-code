@@ -60,22 +60,23 @@ class ClusterMap(object):
     for i in range(number_turns):
       current_cell_status = CLEAN_CELL
       current_cell_virus = (self.virus.current_position.x, self.virus.current_position.y)
-      #print 'CURRENT CELL'
-      #print current_cell_virus
       if current_cell_virus in self.infected_cells:
         current_cell_status = INFECTED_CELL
-      #print 'CURRENT CELL STATUS %s' % current_cell_status
       new_status = self.virus.move_and_infect(current_cell_status)
-      #print 'NEW STATUS %s' % new_status
       if new_status == INFECTED_CELL:
         self.infected_cells.add(current_cell_virus)
         self.number_of_caused_infections += 1
       else:
         self.infected_cells.remove(current_cell_virus)
-      #print self.infected_cells
       
 
 def init_grid(grid):
   virus = Virus(Coordinates(round(float(len(grid[0]) / 2)), round(float(len(grid) / 2)), UP))
   grid = ClusterMap(grid, virus)
+  return grid
+
+def get_grid_from_file():
+  grid = []
+  with open('virus') as f:
+    grid += [row.strip() for row in f.readlines()]
   return grid
