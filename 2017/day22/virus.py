@@ -1,6 +1,8 @@
 from collections import namedtuple
 
 INFECTED_CELL = '#'
+WEAKENED = 'W'
+FLAGGED = 'F'
 CLEAN_CELL = '.'
 UP = 'UP'
 DOWN = 'DOWN'
@@ -9,13 +11,16 @@ RIGHT = 'RIGHT'
 
 Coordinates = namedtuple('Coordinates', ['x', 'y', 'direction'])
 
-class Virus(object):
+class BasicVirus(object):
 
   current_position = None
 
   def __init__(self, coordinate):
     print 'Virus starts at position (%s, %s, %s)' % (coordinate.x, coordinate.y, coordinate.direction)
     self.current_position = coordinate
+
+
+class Virus(BasicVirus):
 
   def move_and_infect(self, current_cell_status):
     new_status = None
@@ -40,6 +45,13 @@ class Virus(object):
         self.current_position = Coordinates(self.current_position.x, self.current_position.y + 1, DOWN)
       new_status = INFECTED_CELL
     return new_status
+
+
+class StrongerVirus(BasicVirus):
+
+  def move_and_infect(self, current_cell_status):
+    raise NotImplementedError()
+
 
 class ClusterMap(object):
 
