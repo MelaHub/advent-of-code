@@ -115,26 +115,20 @@ class ClusterMap(object):
   number_of_caused_infections = None
  
   def __init__(self, initial_grid, virus):
-    self.infected_cells = set()
+    self.infected_cells = {}
     for i in range(len(initial_grid)):
       for j in range(len(initial_grid[i])):
-        if initial_grid[j][i] == INFECTED_CELL:
-          self.infected_cells.add((i, j))
+        self.infected_cells[(i, j)] = initial_grid[j][i]
     self.virus = virus
     self.number_of_caused_infections = 0
 
   def move_virus(self, number_turns):
     for i in range(number_turns):
-      current_cell_status = CLEAN_CELL
       current_cell_virus = (self.virus.current_position.x, self.virus.current_position.y)
-      if current_cell_virus in self.infected_cells:
-        current_cell_status = INFECTED_CELL
-      new_status = self.virus.move_and_infect(current_cell_status)
+      new_status = self.virus.move_and_infect(self.infected_cells.get(current_cell_virus, CLEAN_CELL))
+      self.infected_cells[current_cell_virus] = new_status
       if new_status == INFECTED_CELL:
-        self.infected_cells.add(current_cell_virus)
         self.number_of_caused_infections += 1
-      else:
-        self.infected_cells.remove(current_cell_virus)
       
 
 def init_grid(grid, virus_type):
