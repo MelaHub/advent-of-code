@@ -24,20 +24,20 @@ class Virus(object):
       if self.current_position.direction == UP:
         self.current_position = Coordinates(self.current_position.x + 1, self.current_position.y, RIGHT)
       elif self.current_position.direction == RIGHT:
-        self.current_position = Coordinates(self.current_position.x, self.current_position.y - 1, DOWN)
+        self.current_position = Coordinates(self.current_position.x, self.current_position.y + 1, DOWN)
       elif self.current_position.direction == DOWN:
         self.current_position = Coordinates(self.current_position.x - 1, self.current_position.y, LEFT)
       elif self.current_position.direction == LEFT:
-        self.current_position = Coordinates(self.current_position.x, self.current_position.y + 1, UP)
+        self.current_position = Coordinates(self.current_position.x, self.current_position.y - 1, UP)
     elif current_cell_status == CLEAN_CELL:
       if self.current_position.direction == UP:
         self.current_position = Coordinates(self.current_position.x - 1, self.current_position.y, LEFT)
       elif self.current_position.direction == RIGHT:
-        self.current_position = Coordinates(self.current_position.x, self.current_position.y + 1, UP)
+        self.current_position = Coordinates(self.current_position.x, self.current_position.y - 1, UP)
       elif self.current_position.direction == DOWN:
         self.current_position = Coordinates(self.current_position.x + 1, self.current_position.y, RIGHT)
       elif self.current_position.direction == LEFT:
-        self.current_position = Coordinates(self.current_position.x, self.current_position.y - 1, DOWN)
+        self.current_position = Coordinates(self.current_position.x, self.current_position.y + 1, DOWN)
       new_status = INFECTED_CELL
     return new_status
 
@@ -45,14 +45,35 @@ class ClusterMap(object):
 
   infected_cells = None
   virus = None
+  number_of_caused_infections = None
  
   def __init__(self, initial_grid, virus):
     self.infected_cells = set()
     for i in range(len(initial_grid)):
       for j in range(len(initial_grid[i])):
         if initial_grid[j][i] == INFECTED_CELL:
-          self.infected_cells.add((j, i))
+          self.infected_cells.add((i, j))
     self.virus = virus
+    self.number_of_caused_infections = 0
+
+  def move_virus(self, number_turns):
+    for i in range(number_turns):
+      current_cell_status = CLEAN_CELL
+      current_cell_virus = (self.virus.current_position.x, self.virus.current_position.y)
+      #print 'CURRENT CELL'
+      #print current_cell_virus
+      if current_cell_virus in self.infected_cells:
+        current_cell_status = INFECTED_CELL
+      #print 'CURRENT CELL STATUS %s' % current_cell_status
+      new_status = self.virus.move_and_infect(current_cell_status)
+      #print 'NEW STATUS %s' % new_status
+      if new_status == INFECTED_CELL:
+        self.infected_cells.add(current_cell_virus)
+        self.number_of_caused_infections += 1
+      else:
+        self.infected_cells.remove(current_cell_virus)
+      #print self.infected_cells
+      
 
 def init_grid(grid):
   virus = Virus(Coordinates(round(float(len(grid[0]) / 2)), round(float(len(grid) / 2)), UP))
