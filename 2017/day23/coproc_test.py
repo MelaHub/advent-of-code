@@ -30,3 +30,6 @@ class CoProcessorTest(unittest.TestCase):
     processor.play_program(get_instructions_from_file())
     self.assertEquals(6724, processor.mul_number) 
 
+  def test_no_debug_mode(self):
+    self.assertEquals(903, optimized_program()) 
+

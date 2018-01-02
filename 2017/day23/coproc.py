@@ -1,12 +1,17 @@
 from day18.duet import Processor
+from math import sqrt
+from itertools import count, islice
+
 
 class CoProcessor(Processor):
 
   mul_number = None
 
-  def __init__(self):
+  def __init__(self, debug_mode=True):
     super(CoProcessor, self).__init__()
     self.registers = {chr(i): 0 for i in range(ord('a'), ord('h') + 1)}
+    if not debug_mode:
+      self.registers['a'] = 1
     self.mul_number = 0
 
   def execute(self, instruction):
@@ -29,3 +34,19 @@ def get_instructions_from_file():
     instructions += [row.strip() for row in f.readlines()]
   return instructions
 
+def is_prime(n):
+    return n > 1 and all(n%i for i in islice(count(2), int(sqrt(n)-1)))
+
+
+def optimized_program():
+
+  b = 84 * 100 + 100000
+  c = b + 17000
+  h = 0
+
+  for i in range(b, c + 1, 17):
+    if not is_prime(i):
+      h += 1
+
+  return h
+  
