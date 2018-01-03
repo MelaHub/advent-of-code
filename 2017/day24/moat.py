@@ -52,3 +52,7 @@ def build_bridges(links):
     for bridge in build_bridges_rec(origin_node, links)    
     if len(bridge[1:]) > 0
   ]
+
+def max_strength(links):
+  bridges = build_bridges(links)
+  return max([sum(link.strength) for brige in bridges for link in bridge])
