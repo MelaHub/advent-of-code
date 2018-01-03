@@ -58,6 +58,11 @@ def build_bridges(links):
     if len(bridge[1:]) > 0
   ]
 
-def max_strength(links):
-  bridges = build_bridges(links)
+def max_strength(bridges):
   return max([sum([link.strength for link in bridge]) for bridge in bridges])
+
+def longest_bridges(bridges):
+  max_len = max([len(bridge) for bridge in bridges])
+  return [bridge for bridge in bridges if len(bridge) == max_len]
+  
+  
