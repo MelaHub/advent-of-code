@@ -49,7 +49,7 @@ class MoatTest(unittest.TestCase):
 
   def test_max_strength(self):
     self.assertEquals(31, max_strength(build_bridges(links_from_string(self.TEST_COMPONENTS))))
-    # self.assertEquals(1906, max_strength(build_bridges(links_from_string(links_from_file()))))
+    self.assertEquals(1906, max_strength(build_bridges(links_from_string(links_from_file()))))
 
   def test_strength_longest(self):
     bridges = build_bridges(links_from_string(self.TEST_COMPONENTS))
@@ -57,4 +57,4 @@ class MoatTest(unittest.TestCase):
     self.assertEquals(19, max_strength(longest_bridges_list))
     bridges = build_bridges(links_from_string(links_from_file()))
     longest_bridges_list = longest_bridges(bridges)
-    self.assertEquals(19, max_strength(longest_bridges_list))
+    self.assertEquals(1824, max_strength(longest_bridges_list))
