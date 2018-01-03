@@ -48,6 +48,6 @@ class MoatTest(unittest.TestCase):
     self.assertEquals(sorted([''.join(bridge) for bridge in expected_bridges]), sorted([''.join(bridge) for bridge in string_bridges]))
 
   def test_max_strength(self):
-    self.assertEquals(31, max_srength(self.TEST_COMPONENTS))
+    self.assertEquals(31, max_strength(links_from_string(self.TEST_COMPONENTS)))
     
       

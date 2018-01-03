@@ -55,4 +55,4 @@ def build_bridges(links):
 
 def max_strength(links):
   bridges = build_bridges(links)
-  return max([sum(link.strength) for brige in bridges for link in bridge])
+  return max([sum([link.strength for link in bridge]) for bridge in bridges])
