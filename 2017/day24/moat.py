@@ -26,6 +26,11 @@ class Link(object):
   def __str__(self):
     return '/'.join([str(i) for i in self.link_types])
 
+def links_from_file():
+  links = []
+  with open('links') as f:
+    links += [row.strip() for row in f.readlines()]
+  return links
 
 def links_from_string(links):
   return [Link(i, link) for i, link in enumerate(links)]

@@ -49,5 +49,4 @@ class MoatTest(unittest.TestCase):
 
   def test_max_strength(self):
     self.assertEquals(31, max_strength(links_from_string(self.TEST_COMPONENTS)))
-    
-      
+    self.assertEquals(31, max_strength(links_from_string(links_from_file())))
