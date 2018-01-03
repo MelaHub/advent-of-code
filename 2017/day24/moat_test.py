@@ -19,7 +19,32 @@ class MoatTest(unittest.TestCase):
   ]
 
   def test_instantiate_component(self):
-    link = Link('3/7')
+    link = Link(0, '3/7')
     self.assertEquals(10, link.strength)
     self.assertEquals([3, 7], link.link_types)
-   
+
+  def link_bridges_to_string_bridges(self, bridges):
+    return [
+      [str(link) for link in bridge]
+        for bridge in bridges
+    ]
+
+  def test_build_possible_bridges(self):
+    expected_bridges = [
+      ['0/1'],
+      ['0/1', '10/1'],
+      ['0/1', '10/1', '9/10'],
+      ['0/2'],
+      ['0/2', '2/3'],
+      ['0/2', '2/3', '3/4'],
+      ['0/2', '2/3', '3/5'],
+      ['0/2', '2/2'],
+      ['0/2', '2/2', '2/3'],
+      ['0/2', '2/2', '2/3', '3/4'],
+      ['0/2', '2/2', '2/3', '3/5'],
+    ]
+    output_bridges = build_bridges(links_from_string(self.TEST_COMPONENTS))
+    string_bridges = self.link_bridges_to_string_bridges(output_bridges)
+    self.assertEquals(sorted([''.join(bridge) for bridge in expected_bridges]), sorted([''.join(bridge) for bridge in string_bridges]))
+    
+      
