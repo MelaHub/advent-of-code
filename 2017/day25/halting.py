@@ -4,7 +4,7 @@ import re
 LEFT = 'LEFT'
 RIGHT = 'RIGHT'
 
-NextStep = namedtuple('NextStep', ['curr_value', 'value_to_be_written', 'direction', 'next_status'])
+NextStep = namedtuple('NextStep', ['value_to_be_written', 'direction', 'next_status'])
 
 def parse_instructions_from_file(file_name):
   init_status = None
@@ -38,10 +38,19 @@ def parse_instructions_from_file(file_name):
       if next_status_search:
         next_status = next_status_search.group('new_status')
       if new_state is not None and curr_value is not None and write_value is not None and direction is not None and next_status is not None:
-        instructions.setdefault(new_state, []).append(NextStep(curr_value, write_value, direction, next_status))
+        instructions.setdefault(new_state, {})
+        instructions[new_state][curr_value] = NextStep(write_value, direction, next_status)
         curr_value = None
         write_value = None
         direction = None
         next_status = None
     return init_status, number_of_steps, instructions
+   
+
+def execute_instructions(init_status, number_of_steps, instructions):
+  tape = ['0']
+  current_status = init_status
+  current_tape_index = 0
+  for i in range(number_of_steps):
+    current_instructions = instructions[current_status]
     
