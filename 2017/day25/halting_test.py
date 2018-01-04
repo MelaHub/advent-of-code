@@ -29,3 +29,7 @@ class MoatTest(unittest.TestCase):
     tape = execute_instructions(*parse_instructions_from_file('halting_test'))
     self.assertEquals([1, 1, 0, 1], tape)
     self.assertEquals(3, sum(tape))
+
+  def test_execute_day25_instructions(self):
+    tape = execute_instructions(*parse_instructions_from_file('halting'))
+    self.assertEquals(3362, sum(tape))
