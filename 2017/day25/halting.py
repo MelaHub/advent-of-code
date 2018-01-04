@@ -27,10 +27,10 @@ def parse_instructions_from_file(file_name):
         new_state = new_state_search.group('state')
       curr_value_search = re.search('If the current value is (?P<curr_value>.*):', line)
       if curr_value_search:
-        curr_value = curr_value_search.group('curr_value')
+        curr_value = int(curr_value_search.group('curr_value'))
       write_value_search = re.search('- Write the value (?P<new_value>.*).', line)
       if write_value_search:
-        write_value = write_value_search.group('new_value')
+        write_value = int(write_value_search.group('new_value'))
       direction_search = re.search('- Move one slot to the (?P<direction>.*)\.', line)
       if direction_search:
         direction = direction_search.group('direction').upper()
@@ -48,9 +48,21 @@ def parse_instructions_from_file(file_name):
    
 
 def execute_instructions(init_status, number_of_steps, instructions):
-  tape = ['0']
+  tape = [0]
   current_status = init_status
   current_tape_index = 0
   for i in range(number_of_steps):
-    current_instructions = instructions[current_status]
-    
+    current_instruction = instructions[current_status][tape[current_tape_index]]
+    tape[current_tape_index] = current_instruction.value_to_be_written
+    if current_instruction.direction == RIGHT:
+      current_tape_index += 1
+      if current_tape_index >= len(tape):
+        tape.append(0)
+    elif current_instruction.direction == LEFT:
+      current_tape_index -= 1
+      if current_tape_index < 0:
+        tape = [0] + tape
+        current_tape_index = 0
+    current_status = current_instruction.next_status
+  return tape
+   
