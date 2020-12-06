@@ -5,38 +5,75 @@ use lazy_static::lazy_static;
 use regex::Regex;
 
 const PASSPORT_REGEX: &str = r"([^ ]+):([^ ]+)";
+const HEIGHT_REGEX: &str = r"^(\d+)(cm|in)$";
+const HAIR_REGEX: &str = r"^#[0-9a-f]{6}";
+const PID_REGEX: &str = r"^[0-9]{9}";
 
-// fn validate_birth_year(year: String): Result<usize, ParseIntError> {
+fn byr_validation(year: String) -> bool {
+    match year.parse::<usize>() {
+        Ok(y) => y >= 1920 && y <= 2002 && year.chars().count() == 4,
+        Err(_) => false,
+    }
+}
 
-// }
-// byr (Birth Year) - four digits; at least 1920 and at most 2002.
-// iyr (Issue Year) - four digits; at least 2010 and at most 2020.
-// eyr (Expiration Year) - four digits; at least 2020 and at most 2030.
-// hgt (Height) - a number followed by either cm or in:
-// If cm, the number must be at least 150 and at most 193.
-// If in, the number must be at least 59 and at most 76.
-// hcl (Hair Color) - a # followed by exactly six characters 0-9 or a-f.
-// ecl (Eye Color) - exactly one of: amb blu brn gry grn hzl oth.
-// pid (Passport ID) - a nine-digit number, including leading zeroes.
-// cid (Country ID) - ignored, missing or not.
+fn iyr_validation(year: String) -> bool {
+    match year.parse::<usize>() {
+        Ok(y) => y >= 2010 && y <= 2020 && year.chars().count() == 4,
+        Err(_) => false,
+    }
+}
 
-// struct Passport {
-//     byr: usize,
-//     iyr: usize,
-//     eyr: usize,
-//     hgt: str,
-//     hcl: str,
-//     ecl: str,
-//     pid: str,
-// }
+fn eyr_validation(year: String) -> bool {
+    match year.parse::<usize>() {
+        Ok(y) => y >= 2020 && y <= 2030 && year.chars().count() == 4,
+        Err(_) => false,
+    }
+}
 
-// impl Passport {
-//     type Err = ParsePassportError;
+fn hgt_validation(height: String) -> bool {
+    lazy_static! {
+        static ref REGEX: Regex = Regex::new(HEIGHT_REGEX).unwrap();
+      }
+    let mut valid: bool = false;
 
-//     fn from_hash(input_hash: &HashMap<String, String>) -> Result<Passport, Self::Err> {
+    for cap in REGEX.captures_iter(&height) {
+        valid = match cap[0].parse::<usize>() {
+            Ok(h) => match &cap[1] {
+                "cm" => h >= 150 && h <= 193,
+                "in" => h >= 59 && h <= 76,
+                _ => false
+            },
+            Err(_) => false
+        };
+        break
+    }
+    valid
+}
 
-//     }
-// }
+fn hcl_validation(hair: String) -> bool {
+    lazy_static! {
+        static ref REGEX: Regex = Regex::new(HAIR_REGEX).unwrap();
+      }
+      REGEX.is_match(&hair)
+}
+
+fn ecl_validation(eye: String) -> bool {
+    let mut keys = HashSet::new();
+    let necessary_keys = vec!["amb", "blu", "brn", "gry", "grn", "hzl", "oth"];
+
+    for key in necessary_keys{
+        keys.insert(key.to_string());
+    }
+
+    keys.contains(&eye)
+}
+
+fn pid_validation(pid: String) -> bool {
+    lazy_static! {
+        static ref REGEX: Regex = Regex::new(PID_REGEX).unwrap();
+      }
+      REGEX.is_match(&pid)
+}
 
 fn read_input() -> Vec<String> {
     let input_lines: Vec<String> = stdin()
