@@ -3,5 +3,5 @@
 *.pyc
 *.swp
 .idea
-.target/
+target
 *.lock
