@@ -3,11 +3,13 @@ use std::io::{stdin, BufRead};
 use std::collections::HashSet;
 use lazy_static::lazy_static;
 use regex::Regex;
+use reduce::Reduce;
 
 const PASSPORT_REGEX: &str = r"([^ ]+):([^ ]+)";
 const HEIGHT_REGEX: &str = r"^(\d+)(cm|in)$";
 const HAIR_REGEX: &str = r"^#[0-9a-f]{6}";
 const PID_REGEX: &str = r"^[0-9]{9}";
+
 
 fn byr_validation(year: String) -> bool {
     match year.parse::<usize>() {
@@ -75,6 +77,23 @@ fn pid_validation(pid: String) -> bool {
       REGEX.is_match(&pid)
 }
 
+fn is_passport_valid(passport: &HashMap<String, String>) -> bool {
+
+    let mandatory_keys = get_mandatory_keys();
+    
+    let mut validation_fn: HashMap<String, fn(String) -> bool> = HashMap::new();
+
+    validation_fn.insert("byr".to_string(), byr_validation);
+    validation_fn.insert("iyr".to_string(), iyr_validation);
+    validation_fn.insert("eyr".to_string(), eyr_validation);
+    validation_fn.insert("hgt".to_string(), hgt_validation);
+    validation_fn.insert("hcl".to_string(), hcl_validation);
+    validation_fn.insert("ecl".to_string(), ecl_validation);
+    validation_fn.insert("pid".to_string(), pid_validation);
+
+    has_all_keys(&passport, &mandatory_keys)
+}
+
 fn read_input() -> Vec<String> {
     let input_lines: Vec<String> = stdin()
         .lock()
@@ -120,7 +139,7 @@ fn parse_passport(passports_as_str: Vec<String>) -> Vec<HashMap<String, String>>
     passports                               
 }
 
-fn is_passport_valid(passport: &HashMap<String, String>, mandatory_keys: &HashSet<String>) -> bool {
+fn has_all_keys(passport: &HashMap<String, String>, mandatory_keys: &HashSet<String>) -> bool {
     let mut passport_keys = HashSet::new();
 
     for key in passport.keys() {
@@ -151,12 +170,10 @@ fn main() {
     let input_passports = parse_passport(input_passports_as_str);
     let npassports = input_passports.len();
     
-    let mandatory_keys = get_mandatory_keys();
-    println!("Check valid passports for keys {:?}", mandatory_keys);
 
     let valid_passports: Vec<&HashMap<String, String>> = input_passports
       .iter()
-      .filter(|passport| is_passport_valid(passport, &mandatory_keys))
+      .filter(|passport| is_passport_valid(passport))
       .collect();
 
     println!("There are {} valid passports on a total of {}", valid_passports.len(), npassports);
