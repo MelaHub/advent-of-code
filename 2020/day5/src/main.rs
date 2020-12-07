@@ -1,10 +1,6 @@
 use std::io::{stdin, BufRead};
 
-fn find_val(row &str, curr_min: usize, curr_max: usize, lower_char: char, upper_char: char) -> usize {
-
-}
-
-fn find_row(row: &str, curr_min: usize, curr_max: usize) -> usize{
+fn find_val(row: &str, curr_min: usize, curr_max: usize, lower_char: char, upper_char: char) -> usize {
     if row.len() == 0 {
         return curr_min;
     }
@@ -12,36 +8,28 @@ fn find_row(row: &str, curr_min: usize, curr_max: usize) -> usize{
     let first_char = row.chars().nth(0);
 
     match first_char {
-        Some('F') => find_row(&row[1..], curr_min, (curr_min + curr_max) / 2),
-        Some('B') => find_row(&row[1..], (curr_min + curr_max) / 2, curr_max),
+        Some(c) if c == lower_char => find_val(&row[1..], curr_min, (curr_min + curr_max) / 2, lower_char, upper_char),
+        Some(c) if c == upper_char => find_val(&row[1..], (curr_min + curr_max) / 2, curr_max, lower_char, upper_char),
         _ => 0
     }
-
 }
 
-fn find_col(row: &str, curr_min: usize, curr_max: usize) -> usize{
-    if row.len() == 0 {
-        return curr_min;
-    }
+fn find_row(row: &str) -> usize {
+    find_val(row, 0, 128, 'F', 'B')
+}
 
-    let first_char = row.chars().nth(0);
-    
-    match first_char {
-        Some('L') => find_col(&row[1..], curr_min, (curr_min + curr_max) / 2),
-        Some('R') => find_col(&row[1..], (curr_min + curr_max) / 2, curr_max),
-        _ => 0
-    }
+fn find_col(row: &str) -> usize {
+    find_val(row, 0, 8, 'L', 'R')
 }
 
 fn find_seat_id(seat: &str) -> usize {
     let row_str = &seat[0..7];
     let col_str = &seat[7..10];
 
-    let row = find_row(row_str, 0, 128);
-    let col = find_col(col_str, 0, 8);
+    let row = find_row(row_str);
+    let col = find_col(col_str);
 
-    println!("Original {}, row {}, col {}: {}-{}", seat, row_str, col_str, row, col);
-    0
+    row * 8 + col
 }
 
 fn read_input() -> Vec<String> {
@@ -64,8 +52,8 @@ fn main() {
 
     println!("There are {} seats", input_seats.len());
 
-    for seat in input_seats {
-        find_seat_id(&seat);
-    }
+    let max_id = input_seats.iter().map(|seat| find_seat_id(seat)).max();
+
+    println!("And the highest id is {:?}", max_id);
     
 }
