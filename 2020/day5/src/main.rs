@@ -46,14 +46,28 @@ fn read_input() -> Vec<String> {
 
 fn main() {
 
-    println!("Let's check those seats 🕵️‍♀️");
+    println!("Let's check those seats ✈️");
     
     let input_seats = read_input();
 
     println!("There are {} seats", input_seats.len());
 
-    let max_id = input_seats.iter().map(|seat| find_seat_id(seat)).max();
+    let mut all_ids: Vec<usize> = input_seats.iter().map(|seat| find_seat_id(seat)).collect();
+
+    let max_id = all_ids.iter().max();
 
     println!("And the highest id is {:?}", max_id);
+
+    all_ids.sort();
+    
+    let mut seat_id = 0;
+    for i in 1..all_ids.len() {
+        if all_ids[i - 1] == all_ids[i] - 2 {
+            seat_id = all_ids[i - 1] + 1;
+            break
+        } 
+    }
+
+    println!("The only free seat is {}", seat_id);
     
 }
