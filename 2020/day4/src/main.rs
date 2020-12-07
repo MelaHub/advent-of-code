@@ -3,12 +3,11 @@ use std::io::{stdin, BufRead};
 use std::collections::HashSet;
 use lazy_static::lazy_static;
 use regex::Regex;
-use reduce::Reduce;
 
 const PASSPORT_REGEX: &str = r"([^ ]+):([^ ]+)";
 const HEIGHT_REGEX: &str = r"^(\d+)(cm|in)$";
 const HAIR_REGEX: &str = r"^#[0-9a-f]{6}";
-const PID_REGEX: &str = r"^[0-9]{9}";
+const PID_REGEX: &str = r"^[0-9]{9}$";
 
 
 fn byr_validation(year: String) -> bool {
@@ -39,8 +38,8 @@ fn hgt_validation(height: String) -> bool {
     let mut valid: bool = false;
 
     for cap in REGEX.captures_iter(&height) {
-        valid = match cap[0].parse::<usize>() {
-            Ok(h) => match &cap[1] {
+        valid = match cap[1].parse::<usize>() {
+            Ok(h) => match &cap[2] {
                 "cm" => h >= 150 && h <= 193,
                 "in" => h >= 59 && h <= 76,
                 _ => false
@@ -91,7 +90,17 @@ fn is_passport_valid(passport: &HashMap<String, String>) -> bool {
     validation_fn.insert("ecl".to_string(), ecl_validation);
     validation_fn.insert("pid".to_string(), pid_validation);
 
-    has_all_keys(&passport, &mandatory_keys)
+    let validation = validation_fn.iter()
+        .fold(has_all_keys(&passport, &mandatory_keys), |mut validity, key_fn| {
+            let (key, fun) = key_fn;
+            validity && match passport.get(key) {
+                Some(value) => fun(value.to_string()),
+                None => false,
+            }
+        });
+
+    validation
+
 }
 
 fn read_input() -> Vec<String> {
