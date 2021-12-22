@@ -7,7 +7,7 @@ class CountValidSpec
     with Matchers {
 
   "The count object" should "count the valid triangles in input" in {
-    Day03.checkTriangles() shouldEqual 0
+    Day03.checkTrianglesInRows() shouldEqual 0
   }
 
   "The count object" should "count the valid group triangles in input" in {
