@@ -12,4 +12,8 @@ class RealRoomSpec extends AnyFlatSpec with should.Matchers {
     Room("not-a-real-room", 404, "oarel").isReal shouldEqual true
     Room("totally-real-room", 200, "decoy").isReal shouldEqual false
   }
+
+  "The room name decoder" should "retrieve the real name of the room" in {
+    Room("a-b-c-d-e-f-g-h", 987, "abcde").realName shouldEqual "z-a-b-c-d-e-f-g"
+  }
 }
