@@ -1,11 +1,13 @@
 package day01
 
 import org.scalatest._
+import flatspec._
+import matchers._
 
 
 class GetDistanceSpec
-  extends FlatSpec
-  with Matchers {
+  extends AnyFlatSpec
+  with should.Matchers {
 
   "Moving in a diagonal direction" should "work" in {
     Day01.getDistanceFromStart(Position(2, 3, North)) shouldEqual 5

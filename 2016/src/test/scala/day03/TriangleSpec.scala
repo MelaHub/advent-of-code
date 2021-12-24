@@ -2,10 +2,12 @@ package day03
 
 import day01.Coordinates
 import org.scalatest._
+import flatspec._
+import matchers._
 
 class TriangleSpec
-  extends FlatSpec
-    with Matchers {
+  extends AnyFlatSpec
+    with should.Matchers {
 
   "The triangle object" should "recognize a valid triangle" in {
     Shape(Seq(5, 10, 25)).is_a_valid_triangle shouldEqual false

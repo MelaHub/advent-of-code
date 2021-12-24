@@ -1,10 +1,12 @@
 package day03
 
 import org.scalatest._
+import flatspec._
+import matchers._
 
 class CountValidSpec
-  extends FlatSpec
-    with Matchers {
+  extends AnyFlatSpec
+    with should.Matchers {
 
   "The count object" should "count the valid triangles in input" in {
     Day03.checkTrianglesInRows() shouldEqual 0

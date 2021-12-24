@@ -1,51 +1,65 @@
 package day01
 
+import day01.Day01.{easterBunnyHQDistance, easterBunnyHQDistanceLoop}
+
+import java.io.InputStream
 import scala.annotation.tailrec
-import scala.math.abs
+import scala.io.Source
 
-case class Vec(u: Double, v: Double) {
-  def rotateLeft: Vec = Vec(-v, u)
-  def rotateRight: Vec = Vec(v, -u)
-}
+object Day01 {
 
-case class Point(x: Double, y: Double) {
-  def +(dir: Vec): Point = Point(x + dir.u, y + dir.v)
-  def dist(that: Point): Double = abs(x - that.x) + abs(y - that.y)
-}
+  val startingPosition = Position(Coordinates(0, 0), North)
 
-object Day1 extends App {
+  private[day01] def getFinalPositionFromStart(directions: List[Move]): Position =
+    directions.foldLeft(startingPosition)((p, move) => move.move(p))
+
+  private[day01] def getDistanceFromStart(endPosition: Position): Int =
+    Math.abs(startingPosition.x - endPosition.x) + Math.abs(startingPosition.y - endPosition.y)
+
   @tailrec
-  def followGuide(start: Point, dir: Vec, guide: List[Char],
-                  visited: Set[Point], HQ: Option[Point]): (Point, Option[Point]) = {
-    guide match {
-      case Nil => (start, HQ)
-      case face :: rest => {
-        val new_dir = (face: @unchecked) match {
-          case 'L' => dir.rotateLeft
-          case 'R' => dir.rotateRight
-          case 'S' => dir
+  private def stopAtFirstLoopAcc(currentPosition: Position, futureDirections: List[Move], visitedNodes: Set[Coordinates]): Position =
+    futureDirections.headOption match {
+      case None => currentPosition
+      case Some(move) =>
+        val nextPos = move.move(currentPosition)
+        move match {
+          case Step if (visitedNodes.contains(nextPos.coordinates)) => nextPos
+          case _ => stopAtFirstLoopAcc(nextPos, futureDirections.tail, visitedNodes + nextPos.coordinates)
         }
-        val dest = start + new_dir
-        val new_HQ = if (HQ.isDefined ||
-          !visited.contains(dest)) HQ else Some(dest)
-
-        followGuide(dest, new_dir, rest, visited + dest, new_HQ)
-      }
     }
+
+  def stopAtFirstLoop(directions: List[Move]): Position = stopAtFirstLoopAcc(startingPosition, directions, Set())
+
+  private[day01] def easterBunnyHQDistanceFromMoves(moves: List[Move]) = getDistanceFromStart(getFinalPositionFromStart(moves))
+
+  private[day01] def easterBunnyHQDistanceLoopFromMoves(moves: List[Move]) = getDistanceFromStart(stopAtFirstLoop(moves))
+
+  def easterBunnyHQDistance(): Int = easterBunnyHQDistanceFromMoves(getInputDirections())
+
+  def easterBunnyHQDistanceLoop(): Int = easterBunnyHQDistanceLoopFromMoves(getInputDirections())
+
+  private def getInputDirections(): List[Move] = {
+    val resource: InputStream = this.getClass.getClassLoader.getResourceAsStream("day01_input")
+    val source = Source.fromInputStream(resource)
+    source
+      .getLines()
+      .flatMap(
+        row =>
+          row.split(','))
+      .flatMap(direction =>
+        direction.trim match {
+          case d if d.startsWith("R") => MoveRight :: (1 to d.stripPrefix("R").toInt).map(_ => Step).toList
+          case d if d.startsWith("L") => MoveLeft :: (1 to d.stripPrefix("L").toInt).map(_ => Step).toList
+          case _ => throw new IllegalArgumentException(s"$direction is not a valid direction")
+        })
+      .toList
   }
 
-  def expand(step: String): List[Char] =
-    step.head :: List.fill(step.tail.toInt - 1)('S')
+}
 
-  val input = "R8, R4, R4, R8"
-  val guide = input.split(", ").toList.map(expand).flatten
-  val start = Point(0, 0)
+object Day01Main extends App {
 
-  followGuide(start, Vec(0, 1), guide, Set(start), None) match {
-    case (dest, hq) => {
-      println("start to destination: " + dest.dist(start))
-      if (hq.isEmpty) println("HQ does not exist")
-      else println("start to HQ: " + hq.get.dist(start))
-    }
-  }
+  println(s"BunnyHQ is ${easterBunnyHQDistance()} blocks away")
+  println(s"BunnyHQ in loop is ${easterBunnyHQDistanceLoop()} blocks away")
+
 }
