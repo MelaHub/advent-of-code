@@ -18,7 +18,7 @@ object Day05 extends App {
         case _ => findHashWithLeadingZeroes(doorId, startingIndex + 1)
       }
 
-  private[day05] def getPasswordDigit(hash: Hash): Char = hash.hash.charAt(5)
+  private[day05] def getPasswordDigit(hash: Hash, position: Int): Char = hash.hash.charAt(position)
 
   @tailrec
   private[day05] def getPasswordRe(doorId: String, startingIndex: Long, currPassword: String): String = {
@@ -26,12 +26,12 @@ object Day05 extends App {
       currPassword
     else {
       val hashWithLeadingZeroes = findHashWithLeadingZeroes(doorId, startingIndex)
-      getPasswordRe(doorId, hashWithLeadingZeroes.index + 1, s"$currPassword${getPasswordDigit(hashWithLeadingZeroes)}")
+      getPasswordRe(doorId, hashWithLeadingZeroes.index + 1, s"$currPassword${getPasswordDigit(hashWithLeadingZeroes, 5)}")
     }
   }
 
-  private[day05] def getPassword(doorId: String): String = getPasswordRe(doorId, 0, "")
+  private[day05] def getSequencePassword(doorId: String): String = getPasswordRe(doorId, 0, "")
 
-  println(s"The password is ${getPassword("wtnhxymk")}")
+  println(s"The password in sequence is ${getSequencePassword("wtnhxymk")}")
 
 }

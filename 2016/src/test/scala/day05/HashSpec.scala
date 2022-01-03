@@ -15,7 +15,7 @@ class HashSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "A password" should "be valid" in  {
-    Day05.getPassword("abd") should be("18f47a30")
+    Day05.getSequencePassword("abd") should be("18f47a30")
   }
 
 }
