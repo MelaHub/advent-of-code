@@ -8,7 +8,7 @@ case class Hash(doorId: String, index: Long, hash: String)
 
 trait Password {
   def password: Array[Option[Char]]
-  def +(hash: String): Password
+  def +=(hash: String): Unit
   def isPasswordCompleted(): Boolean = password.forall(_.isDefined)
   def getPassword: String = password.flatten.mkString
 
@@ -18,9 +18,9 @@ class SequentialPassword private(val password: Array[Option[Char]]) extends Pass
 
   private def getPasswordDigit(hash: String, position: Int): Char = hash.charAt(position)
 
-  override def +(hash: String): SequentialPassword = {
+  override def +=(hash: String) = {
     val currHashChar = getPasswordDigit(hash, 5)
-    new SequentialPassword(password.takeWhile(_.isDefined) :+ Some(currHashChar) :++ Array.fill(password.length - password.count(_.isDefined) - 1)(Option.empty[Char]))
+    password.update(password.count(_.isDefined), Some(currHashChar))
   }
 
 }
@@ -34,16 +34,11 @@ class BetterPassword private(val password: Array[Option[Char]]) extends Password
   private def getPasswordDigit(hash: String, position: Int): Char = hash.charAt(position)
   private def getPasswordPosition(hash: String, position: Int): Char = hash.charAt(position)
 
-  override def +(hash: String): BetterPassword = {
+  override def +=(hash: String): Unit = {
     val currHashPos = getPasswordPosition(hash, 5).asDigit
     if (currHashPos >= password.length) this
     else {
-      val currHashChar = getPasswordDigit(hash, 6)
-      val currPassChar = password(currHashPos)
-      currPassChar match {
-        case None => new BetterPassword(password.slice(0, currHashPos) :+ (Some(currHashChar)) :++ password.slice(currHashPos + 1, password.length))
-        case Some(_) => this
-      }
+      if (password(currHashPos).isEmpty) password.update(currHashPos, Some(getPasswordDigit(hash, 6)))
     }
   }
 }
@@ -84,7 +79,8 @@ object Day05 extends App {
       currPassword.getPassword
     } else {
       val hashWithLeadingZeroes = findHashWithLeadingZeroes(doorId, startingIndex, currPassword)
-      getPasswordRe(doorId, hashWithLeadingZeroes.index + 1, currPassword + hashWithLeadingZeroes.hash)
+      currPassword += hashWithLeadingZeroes.hash
+      getPasswordRe(doorId, hashWithLeadingZeroes.index + 1, currPassword)
     }
 
   private[day05] def getSequencePassword(doorId: String): String = getPasswordRe(doorId, 0, SequentialPassword(passLength))
