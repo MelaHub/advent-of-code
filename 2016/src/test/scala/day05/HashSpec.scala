@@ -11,7 +11,7 @@ class HashSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "Searching the hash with leading zeroes" should "return a hash starting with siz zeroes" in {
-    Day05.findHashWithLeadingZeroes("abc", 0) should be(Hash("abc", 3231929,"00000155f8105dff7f56ee10fa9b9abd"))
+    Day05.findHashWithLeadingZeroes("abc", 0, SequentialPassword(8)) should be(Hash("abc", 3231929,"00000155f8105dff7f56ee10fa9b9abd"))
   }
 
   "A password" should "be valid" in  {
