@@ -8,6 +8,8 @@ case class Hash(doorId: String, index: Long, hash: String)
 
 object Day05 extends App {
 
+  private val doorId = "wtnhxymk"
+
   private[day05] def md5(doorId: String, index: Long): Hash =
     Hash(doorId, index, MessageDigest.getInstance("MD5").digest(s"$doorId${index.toString}".getBytes("UTF-8")).map("%02x".format(_)).mkString)
 
@@ -32,6 +34,6 @@ object Day05 extends App {
 
   private[day05] def getSequencePassword(doorId: String): String = getPasswordRe(doorId, 0, "")
 
-  println(s"The password in sequence is ${getSequencePassword("wtnhxymk")}")
+  println(s"The password in sequence is ${getSequencePassword(doorId)}")
 
 }
