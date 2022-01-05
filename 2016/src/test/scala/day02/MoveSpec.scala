@@ -2,10 +2,12 @@ package day02
 
 import day01.Coordinates
 import org.scalatest._
+import flatspec._
+import matchers._
 
 class MoveSpec
-  extends FlatSpec
-    with Matchers {
+  extends AnyFlatSpec
+    with should.Matchers {
 
   "The MoveRight object" should "move to the right" in {
     MoveRight.move(Coordinates(-1, 0), GRID_KEYPAD) shouldEqual Coordinates(0, 0)

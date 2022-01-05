@@ -1,11 +1,13 @@
 package day01
 
 import org.scalatest._
+import flatspec._
+import matchers._
 
 
 class GetFinalPositionSpec
-  extends FlatSpec
-  with Matchers {
+  extends AnyFlatSpec
+  with should.Matchers {
 
   "Moving in a diagonal direction" should "work" in {
     Day01.getFinalPositionFromStart(List(MoveRight) ++ Step(2) ++ List(MoveLeft) ++ Step(3)) shouldEqual Position(2, 3, North)

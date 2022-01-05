@@ -2,10 +2,12 @@ package day02
 
 import day01.Coordinates
 import org.scalatest._
+import flatspec._
+import matchers._
 
 class FindCodeSpec
-  extends FlatSpec
-    with Matchers {
+  extends AnyFlatSpec
+    with should.Matchers {
 
   "The find code object" should "find the correct code in a grid keypad" in {
     Day02.bathroomCodeRec(GRID_KEYPAD, List(List(MoveUp, MoveLeft, MoveLeft))) shouldEqual "1"

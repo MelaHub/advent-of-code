@@ -1,10 +1,12 @@
 package day01
 
 import org.scalatest._
+import flatspec._
+import matchers._
 
 class MoveSpec
-  extends FlatSpec
-    with Matchers {
+  extends AnyFlatSpec
+    with should.Matchers {
 
   "The MoveLeft object" should "move to the left" in {
     MoveLeft.move(Position(0, 0, North)) shouldEqual Position(0, 0, West)

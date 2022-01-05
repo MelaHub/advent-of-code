@@ -1,7 +1,8 @@
 package day01
 
-import java.io.InputStream
+import day01.Day01.{easterBunnyHQDistance, easterBunnyHQDistanceLoop}
 
+import java.io.InputStream
 import scala.annotation.tailrec
 import scala.io.Source
 
@@ -29,9 +30,13 @@ object Day01 {
 
   def stopAtFirstLoop(directions: List[Move]): Position = stopAtFirstLoopAcc(startingPosition, directions, Set())
 
-  def easterBunnyHQDistance(): Int = getDistanceFromStart(getFinalPositionFromStart(getInputDirections()))
+  private[day01] def easterBunnyHQDistanceFromMoves(moves: List[Move]) = getDistanceFromStart(getFinalPositionFromStart(moves))
 
-  def easterBunnyHQDistanceLoop(): Int = getDistanceFromStart(stopAtFirstLoop(getInputDirections()))
+  private[day01] def easterBunnyHQDistanceLoopFromMoves(moves: List[Move]) = getDistanceFromStart(stopAtFirstLoop(moves))
+
+  def easterBunnyHQDistance(): Int = easterBunnyHQDistanceFromMoves(getInputDirections())
+
+  def easterBunnyHQDistanceLoop(): Int = easterBunnyHQDistanceLoopFromMoves(getInputDirections())
 
   private def getInputDirections(): List[Move] = {
     val resource: InputStream = this.getClass.getClassLoader.getResourceAsStream("day01_input")
@@ -52,3 +57,9 @@ object Day01 {
 
 }
 
+object Day01Main extends App {
+
+  println(s"BunnyHQ is ${easterBunnyHQDistance()} blocks away")
+  println(s"BunnyHQ in loop is ${easterBunnyHQDistanceLoop()} blocks away")
+
+}

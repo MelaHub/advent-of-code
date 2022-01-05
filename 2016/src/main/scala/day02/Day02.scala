@@ -8,7 +8,7 @@ import scala.annotation.tailrec
 import scala.io.Source
 
 
-object Day02 {
+object Day02 extends App {
 
   @tailrec
   def bathroomCodeRecFn(keypad: Map[Coordinates, String], currentCoordinate: Coordinates, currentInstruction: List[Move], remainingInstructionList: List[List[Move]], partialCode: String): String = {
@@ -48,4 +48,8 @@ object Day02 {
         )
       .toList
   }
+
+  println(s"Bathroom code grid is ${bathroomCodeGrid()}")
+  println(s"Bathroom code star is ${bathroomCodeStar()}")
+
 }
