@@ -21,18 +21,27 @@ object Day06 extends App {
           case (currChar, listChars) => currChar -> listChars.size
         })
 
-  def mostCommonLetters: List[Map[Char, Int]] => List[Option[Char]] = seqCounters => seqCounters
+  def mostRelevantLetters(seqCounters: List[Map[Char, Int]])(implicit sortingCount: ((Char, Int)) => Int, ord: Ordering[Int]): List[Option[Char]] = seqCounters
     .map(
-      _.toList.sortBy { case (_, count) => -count }.take(1).headOption.map { case (currChar, _) => currChar}
+      _.toList.sortBy { sortingCount }.take(1).headOption.map { case (currChar, _) => currChar}
     )
 
-  def findHiddenMessage: List[String] => String = messages => (decomposedValues andThen counter andThen mostCommonLetters)(messages).flatten.mkString
+  def findHiddenMessageMostCommonLetter: List[String] => String = messages => {
+    implicit def mostCommonLetters: ((Char, Int)) => Int = {case (_, count) => (-count)}
+    (decomposedValues andThen counter andThen mostRelevantLetters)(messages).flatten.mkString
+  }
+
+  def findHiddenMessageLeaseCommonLetter: List[String] => String = messages => {
+    implicit def leastCommonLetters: ((Char, Int)) => Int = {case (_, count) => (count)}
+    (decomposedValues andThen counter andThen mostRelevantLetters)(messages).flatten.mkString
+  }
 
   private def getInputMessages(): List[String] = {
     val resource: InputStream = this.getClass.getClassLoader.getResourceAsStream("day06_input")
     Source.fromInputStream(resource).getLines().toList
   }
 
-  println(s"The hidden message is: ${findHiddenMessage(getInputMessages())}")
+  println(s"The hidden message with most common letter is is: ${findHiddenMessageMostCommonLetter(getInputMessages())}")
+  println(s"The hidden message with least common letter is is: ${findHiddenMessageLeaseCommonLetter(getInputMessages())}")
 
 }

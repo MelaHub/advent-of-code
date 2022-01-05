@@ -52,10 +52,10 @@ class MessageBagSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "A message bag" should "correctly retrieve the most occurring char" in {
-    (Day06.decomposedValues andThen Day06.counter andThen Day06.mostCommonLetters)(testInput) should be(List(Some('e'), Some('a'), Some('s'), Some('t'), Some('e'), Some('r')))
+    (Day06.decomposedValues andThen Day06.counter andThen Day06.mostRelevantLetters)(testInput) should be(List(Some('e'), Some('a'), Some('s'), Some('t'), Some('e'), Some('r')))
   }
 
   "Day06" should "correctly decode a message" in {
-    Day06.findHiddenMessage(testInput) should be("easter")
+    Day06.findHiddenMostCommonLetterMessage(testInput) should be("easter")
   }
 }
