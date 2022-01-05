@@ -26,14 +26,17 @@ object Day06 extends App {
       _.toList.sortBy { sortingCount }.take(1).headOption.map { case (currChar, _) => currChar}
     )
 
+  def findHiddenMessageLetters(messages: List[String])(implicit sortingCount: ((Char, Int)) => Int, ord: Ordering[Int]): String =
+    (decomposedValues andThen counter andThen mostRelevantLetters)(messages).flatten.mkString
+
   def findHiddenMessageMostCommonLetter: List[String] => String = messages => {
     implicit def mostCommonLetters: ((Char, Int)) => Int = {case (_, count) => (-count)}
-    (decomposedValues andThen counter andThen mostRelevantLetters)(messages).flatten.mkString
+    findHiddenMessageLetters(messages)
   }
 
   def findHiddenMessageLeaseCommonLetter: List[String] => String = messages => {
     implicit def leastCommonLetters: ((Char, Int)) => Int = {case (_, count) => (count)}
-    (decomposedValues andThen counter andThen mostRelevantLetters)(messages).flatten.mkString
+    findHiddenMessageLetters(messages)
   }
 
   private def getInputMessages(): List[String] = {
