@@ -1,5 +1,8 @@
 package day06
 
+import java.io.InputStream
+import scala.io.Source
+
 object Day06 extends App {
 
   def decomposedValues: List[String] => List[List[Char]] = messages => messages
@@ -25,5 +28,11 @@ object Day06 extends App {
 
   def findHiddenMessage: List[String] => String = messages => (decomposedValues andThen counter andThen mostCommonLetters)(messages).flatten.mkString
 
+  private def getInputMessages(): List[String] = {
+    val resource: InputStream = this.getClass.getClassLoader.getResourceAsStream("day06_input")
+    Source.fromInputStream(resource).getLines().toList
+  }
+
+  println(s"The hidden message is: ${findHiddenMessage(getInputMessages())}")
 
 }
